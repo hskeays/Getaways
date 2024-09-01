@@ -19,22 +19,21 @@
             android:id="@+id/tv_welcome_message" />
 
     <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:contentDescription="@string/content_description_airplane_icon"
             app:srcCompat="@drawable/baseline_flight_24"
             android:id="@+id/iv_plane"
             app:layout_constraintTop_toBottomOf="@+id/tv_welcome_message"
             app:layout_constraintStart_toStartOf="@+id/tv_welcome_message"
             app:layout_constraintEnd_toEndOf="@+id/tv_welcome_message"
-            android:layout_marginTop="32dp" />
+            android:layout_marginTop="16dp" />
 
     <Button
             android:text="@string/enter_a_new_vacation"
             android:layout_width="wrap_content"
-            android:layout_height="70dp"
+            android:layout_height="wrap_content"
             android:id="@+id/btn_submit"
-            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

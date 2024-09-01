@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+            android:id="@+id/ic_home"
+            android:icon="@drawable/baseline_home_24"
+            android:title="@string/Home"
+            app:showAsAction="ifRoom" />
+    <item
+            android:id="@+id/ic_back"
+            android:icon="@drawable/baseline_arrow_back_24"
+            android:title="@string/Back"
+            app:showAsAction="ifRoom" />
+    <item
+            android:id="@+id/vacation_list"
+            android:title="@string/vacation_list" />
+    <item
+            android:id="@+id/vacation_details"
+            android:title="@string/vacation_details" />
+</menu>
