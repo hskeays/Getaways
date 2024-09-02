@@ -12,6 +12,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.getaways.R;
+import com.example.getaways.database.Repository;
+import com.example.getaways.entities.Excursion;
+import com.example.getaways.entities.Vacation;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class VacationList extends AppCompatActivity {
@@ -36,7 +39,7 @@ public class VacationList extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.appbar_menu, menu); // Inflate the app bar menu
+        getMenuInflater().inflate(R.menu.appbar_menu, menu);
         return true;
     }
 
@@ -52,6 +55,18 @@ public class VacationList extends AppCompatActivity {
             startActivity(new Intent(this, VacationList.class));
         } else if (id == R.id.vacation_details) {
             startActivity(new Intent(this, VacationDetails.class));
+        } else if (id == R.id.add_sample_data) {
+            Repository repository = new Repository(getApplication());
+
+            Vacation vacation1 = new Vacation(0, "Miami", "Hilton", "09/01/2024", "09/05/2024");
+            repository.insert(vacation1);
+            Vacation vacation2 = new Vacation(0, "Vegas", "Desert Inn", "09/07/2024", "09/12/2024");
+            repository.insert(vacation2);
+
+            Excursion excursion1 = new Excursion(0, "09/07/2024", "Gambling", 1);
+            repository.insert(excursion1);
+            Excursion excursion2 = new Excursion(0, "09/01/2024", "Loitering", 1);
+            repository.insert(excursion2);
         }
         return super.onOptionsItemSelected(item);
     }
