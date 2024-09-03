@@ -23,4 +23,8 @@
     <string name="delete">Delete</string>
     <string name="alert">Alert</string>
     <string name="add_sample_data">Add sample data</string>
+    <string name="current_excursions">Current excursions:</string>
+    <string name="no_associated_vacation">No associated vacation</string>
+    <string name="no_excursion_name">No excursion name</string>
+    <string name="placeholder">PLACEHOLDER</string>
 </resources>

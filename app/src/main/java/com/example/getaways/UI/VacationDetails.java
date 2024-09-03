@@ -12,13 +12,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.getaways.R;
+import com.example.getaways.UI.adapters.ExcursionAdapter;
+import com.example.getaways.database.Repository;
+import com.example.getaways.entities.Excursion;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class VacationDetails extends AppCompatActivity {
+    Repository repository;
     private Button btnPickStartDate;
     private Button btnPickEndDate;
 
@@ -45,6 +52,15 @@ public class VacationDetails extends AppCompatActivity {
             Intent excursionDetailsIntent = new Intent(VacationDetails.this, ExcursionDetails.class);
             startActivity(excursionDetailsIntent);
         });
+
+        int vacationID = getIntent().getIntExtra("ID", 0);
+        repository = new Repository(getApplication());
+        ExcursionAdapter excursionAdapter = new ExcursionAdapter(this);
+        List<Excursion> excursionList = repository.getAssociatedExcursions(vacationID);
+        RecyclerView recyclerView = findViewById(R.id.rv_excursion_list_items);
+        recyclerView.setAdapter(excursionAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        excursionAdapter.setExcursions(excursionList);
     }
 
     @Override

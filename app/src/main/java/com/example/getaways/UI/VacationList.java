@@ -10,12 +10,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.getaways.R;
+import com.example.getaways.UI.adapters.VacationAdapter;
 import com.example.getaways.database.Repository;
 import com.example.getaways.entities.Excursion;
 import com.example.getaways.entities.Vacation;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.List;
 
 public class VacationList extends AppCompatActivity {
 
@@ -35,6 +40,14 @@ public class VacationList extends AppCompatActivity {
             Intent vacationDetailsIntent = new Intent(VacationList.this, VacationDetails.class);
             startActivity(vacationDetailsIntent);
         });
+
+        Repository repository = new Repository(getApplication());
+        VacationAdapter vacationAdapter = new VacationAdapter(this);
+        List<Vacation> vacationList = repository.getAllVacations();
+        RecyclerView recyclerView = findViewById(R.id.rv_vacation_list_items);
+        recyclerView.setAdapter(vacationAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        vacationAdapter.setVacations(vacationList);
     }
 
     @Override
@@ -58,14 +71,14 @@ public class VacationList extends AppCompatActivity {
         } else if (id == R.id.add_sample_data) {
             Repository repository = new Repository(getApplication());
 
-            Vacation vacation1 = new Vacation(0, "Miami", "Hilton", "09/01/2024", "09/05/2024");
+            Vacation vacation1 = new Vacation(1, "Miami", "Hilton", "09/01/2024", "09/05/2024");
             repository.insert(vacation1);
-            Vacation vacation2 = new Vacation(0, "Vegas", "Desert Inn", "09/07/2024", "09/12/2024");
+            Vacation vacation2 = new Vacation(2, "Vegas", "Desert Inn", "09/07/2024", "09/12/2024");
             repository.insert(vacation2);
 
-            Excursion excursion1 = new Excursion(0, "09/07/2024", "Gambling", 1);
+            Excursion excursion1 = new Excursion(1, "09/07/2024", "Gambling", 1);
             repository.insert(excursion1);
-            Excursion excursion2 = new Excursion(0, "09/01/2024", "Loitering", 1);
+            Excursion excursion2 = new Excursion(2, "09/01/2024", "Loitering", 1);
             repository.insert(excursion2);
         }
         return super.onOptionsItemSelected(item);

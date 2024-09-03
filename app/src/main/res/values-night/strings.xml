@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Getaways</string>
-    <string name="welcome_to_getaways">Welcome to Getaways!</string>
-    <string name="content_description_airplane_icon">Airplane icon</string>
-    <string name="enter">Enter</string>
-    <string name="Back">Back</string>
+    <string name="add_floating_icon">Add floating icon</string>
+    <string name="Home">Home</string>
+    <string name="vacation_list">Vacation List</string>
+    <string name="vacation_details">Vacation Details</string>
+    <string name="title">Title:</string>
+    <string name="hotel">Hotel:</string>
+    <string name="start_date">Start date:</string>
+    <string name="end_date">End date:</string>
+    <string name="pick_a_date">Pick a date</string>
+    <string name="enter_hotel_name">Enter hotel name</string>
+    <string name="enter_vacation_title">Enter vacation title</string>
+    <string name="enter_a_new_vacation">Enter a new vacation</string>
+    <string name="excursion_title">Excursion Title</string>
+    <string name="enter_excursion_title">Enter excursion title</string>
+    <string name="date">Date:</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="alert">Alert</string>
+    <string name="add_sample_data">Add sample data</string>
 </resources>
