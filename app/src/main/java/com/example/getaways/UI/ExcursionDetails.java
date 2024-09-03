@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import com.example.getaways.R;
 import java.util.Calendar;
 
 public class ExcursionDetails extends AppCompatActivity {
+    private EditText etvExcursionTitle;
     private Button btnPickExcursionDate;
 
     @Override
@@ -31,8 +33,22 @@ public class ExcursionDetails extends AppCompatActivity {
             return insets;
         });
 
+        // Get extras from previous intent
+        int excursionID = getIntent().getIntExtra("ID", 0);
+        String excursionDate = getIntent().getStringExtra("EXCURSION_DATE");
+        String excursionTitle = getIntent().getStringExtra("EXCURSION_TITLE");
+        int vacationID = getIntent().getIntExtra("VACATION_ID", 0);
+
+        // Initialize views and set on click listeners
+        etvExcursionTitle = findViewById(R.id.etv_enter_excursion_title);
+
         btnPickExcursionDate = findViewById(R.id.btn_excursion_date_picker);
         btnPickExcursionDate.setOnClickListener(view -> showDatePickerDialog(btnPickExcursionDate));
+
+        if (excursionID != 0) {
+            etvExcursionTitle.setText(excursionTitle);
+            btnPickExcursionDate.setText(excursionDate);
+        }
     }
 
     @Override

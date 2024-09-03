@@ -12,8 +12,7 @@ public class Vacation {
     private String startDate;
     private String endDate;
 
-    public Vacation(int id, String vacationTitle, String hotelName, String startDate, String endDate) {
-        this.id = id;
+    public Vacation(String vacationTitle, String hotelName, String startDate, String endDate) {
         this.vacationTitle = vacationTitle;
         this.hotelName = hotelName;
         this.startDate = startDate;

@@ -71,14 +71,14 @@ public class VacationList extends AppCompatActivity {
         } else if (id == R.id.add_sample_data) {
             Repository repository = new Repository(getApplication());
 
-            Vacation vacation1 = new Vacation(1, "Miami", "Hilton", "09/01/2024", "09/05/2024");
+            Vacation vacation1 = new Vacation("Miami", "Hilton", "09/01/2024", "09/05/2024");
             repository.insert(vacation1);
-            Vacation vacation2 = new Vacation(2, "Vegas", "Desert Inn", "09/07/2024", "09/12/2024");
+            Vacation vacation2 = new Vacation("Vegas", "Desert Inn", "09/07/2024", "09/12/2024");
             repository.insert(vacation2);
 
-            Excursion excursion1 = new Excursion(1, "09/07/2024", "Gambling", 1);
+            Excursion excursion1 = new Excursion("09/07/2024", "Gambling", 1);
             repository.insert(excursion1);
-            Excursion excursion2 = new Excursion(2, "09/01/2024", "Loitering", 1);
+            Excursion excursion2 = new Excursion("09/01/2024", "Loitering", 1);
             repository.insert(excursion2);
         }
         return super.onOptionsItemSelected(item);
