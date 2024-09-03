@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,12 +16,21 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.getaways.R;
+import com.example.getaways.database.Repository;
+import com.example.getaways.entities.Excursion;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class ExcursionDetails extends AppCompatActivity {
+    private Repository repository;
     private EditText etvExcursionTitle;
     private Button btnPickExcursionDate;
+    private Button btnSave;
+    private Button btnDelete;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +48,8 @@ public class ExcursionDetails extends AppCompatActivity {
         String excursionDate = getIntent().getStringExtra("EXCURSION_DATE");
         String excursionTitle = getIntent().getStringExtra("EXCURSION_TITLE");
         int vacationID = getIntent().getIntExtra("VACATION_ID", 0);
+        String vacationStartDate = getIntent().getStringExtra("VACATION_START_DATE");
+        String vacationEndDate = getIntent().getStringExtra("VACATION_END_DATE");
 
         // Initialize views and set on click listeners
         etvExcursionTitle = findViewById(R.id.etv_enter_excursion_title);
@@ -45,6 +57,13 @@ public class ExcursionDetails extends AppCompatActivity {
         btnPickExcursionDate = findViewById(R.id.btn_excursion_date_picker);
         btnPickExcursionDate.setOnClickListener(view -> showDatePickerDialog(btnPickExcursionDate));
 
+        btnSave = findViewById(R.id.btn_save_excursion);
+        btnSave.setOnClickListener(view -> handleSaveButtonClick(excursionID, vacationID));
+
+        btnDelete = findViewById(R.id.btn_delete_excursion);
+        btnDelete.setOnClickListener(view -> handleDeleteButtonClick(excursionID));
+
+        // If vacation clicked and exists, prefill details in views
         if (excursionID != 0) {
             etvExcursionTitle.setText(excursionTitle);
             btnPickExcursionDate.setText(excursionDate);
@@ -85,5 +104,87 @@ public class ExcursionDetails extends AppCompatActivity {
         }, year, month, day);
 
         datePickerDialog.show();
+    }
+
+    private void handleSaveButtonClick(int excursionID, int vacationID) {
+        repository = new Repository(getApplication());
+
+        String excursionTitle = etvExcursionTitle.getText().toString();
+        String excursionDate = btnPickExcursionDate.getText().toString();
+        String vacationStartDate = getIntent().getStringExtra("VACATION_START_DATE");
+        String vacationEndDate = getIntent().getStringExtra("VACATION_END_DATE");
+
+        if (isValidExcursion(excursionTitle, excursionDate, vacationStartDate, vacationEndDate)) {
+            Excursion excursion;
+            // If excursion does not exist insert, else update
+            if (excursionID == 0) {
+                excursion = new Excursion(excursionDate, excursionTitle, vacationID);
+                repository.insert(excursion);
+                Toast.makeText(this, "Excursion successfully added.", Toast.LENGTH_SHORT).show();
+            } else {
+                excursion = new Excursion(excursionDate, excursionTitle, vacationID);
+                excursion.setId(excursionID);
+                repository.update(excursion);
+                Toast.makeText(this, "Excursion successfully updated.", Toast.LENGTH_SHORT).show();
+            }
+            finish();
+        } else if (!isDateBetween(excursionDate, vacationStartDate, vacationEndDate)) {
+            Toast.makeText(this, "Excursion date must be between vacation dates.", Toast.LENGTH_SHORT).show();
+        } else if (excursionTitle.isEmpty()) {
+            Toast.makeText(this, "Excursion title cannot be empty.", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Invalid input, please try again.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void handleDeleteButtonClick(int excursionID) {
+        // TODO: create confirmation dialog for deletion confirmation
+        repository = new Repository(getApplication());
+        Excursion excursion = repository.getExcursionByID(excursionID);
+        if (repository.excursionExists(excursionID)) {
+            repository.delete(excursion);
+            Toast.makeText(this, "Successfully deleted excursion.", Toast.LENGTH_SHORT).show();
+            finish();
+        } else {
+            Toast.makeText(this, "Failed to delete excursion.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private String normalizeDate(String date) {
+        String[] parts = date.split("/");
+
+        String month = parts[0].length() == 1 ? "0" + parts[0] : parts[0];
+        String day = parts[1].length() == 1 ? "0" + parts[1] : parts[1];
+        String year = parts[2];
+
+        return month + "/" + day + "/" + year;
+    }
+
+    private boolean isDateBetween(String targetDate, String startDate, String endDate) {
+        // Normalize the dates to MM/dd/yyyy format
+        targetDate = normalizeDate(targetDate);
+        startDate = normalizeDate(startDate);
+        endDate = normalizeDate(endDate);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+
+        try {
+            Date parsedTargetDate = sdf.parse(targetDate);
+            Date parsedStartDate = sdf.parse(startDate);
+            Date parsedEndDate = sdf.parse(endDate);
+
+            if (parsedTargetDate != null && parsedStartDate != null && parsedEndDate != null) {
+                return !parsedTargetDate.before(parsedStartDate) && !parsedTargetDate.after(parsedEndDate);
+            } else {
+                return false;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private boolean isValidExcursion(String excursionTitle, String excursionDate, String vacationStartDate, String vacationEndDate) {
+        return !excursionTitle.isEmpty() && isDateBetween(excursionDate, vacationStartDate, vacationEndDate);
     }
 }

@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:layout_margin="16dp"
-            android:id="@+id/tv_excursion_list_item_count"
+            android:id="@+id/tv_excursion_list_item_date"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

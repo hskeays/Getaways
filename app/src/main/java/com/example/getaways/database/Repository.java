@@ -18,7 +18,11 @@ public class Repository {
     private final VacationDAO vacationDAO;
     private final ExcursionDAO excursionDAO;
     private List<Vacation> allVacations;
+    private Vacation vacation;
+    private Excursion excursion;
     private List<Excursion> allExcursions;
+    private boolean vacationExists;
+    private boolean excursionExists;
 
     public Repository(Application application) {
         DatabaseBuilder db = DatabaseBuilder.getDatabase(application);
@@ -26,6 +30,7 @@ public class Repository {
         excursionDAO = db.excursionDAO();
     }
 
+    // GET **********************
     public List<Vacation> getAllVacations() {
         databaseExecutor.execute(() -> allVacations = vacationDAO.getAllVacations());
         try {
@@ -34,6 +39,26 @@ public class Repository {
             e.printStackTrace();
         }
         return allVacations;
+    }
+
+    public Vacation getVacationByID(int vacationID) {
+        databaseExecutor.execute(() -> vacation = vacationDAO.getVacationByID(vacationID));
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return vacation;
+    }
+
+    public Excursion getExcursionByID(int excursionID) {
+        databaseExecutor.execute(() -> excursion = excursionDAO.getExcursionByID(excursionID));
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return excursion;
     }
 
     public List<Excursion> getAllExcursions() {
@@ -56,6 +81,27 @@ public class Repository {
         return allExcursions;
     }
 
+    public Boolean vacationExists(int vacationID) {
+        databaseExecutor.execute(() -> vacationExists = vacationDAO.vacationExists(vacationID));
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return vacationExists;
+    }
+
+    public Boolean excursionExists(int excursionID) {
+        databaseExecutor.execute(() -> excursionExists = excursionDAO.excursionExists(excursionID));
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return excursionExists;
+    }
+
+    // INSERT *********************
     public void insert(Vacation vacation) {
         databaseExecutor.execute(() -> vacationDAO.insert(vacation));
     }
@@ -69,6 +115,7 @@ public class Repository {
         }
     }
 
+    // UPDATE *************************
     public void update(Vacation vacation) {
         databaseExecutor.execute(() -> vacationDAO.update(vacation));
         try {
@@ -87,9 +134,9 @@ public class Repository {
         }
     }
 
+    // DELETE *********************
     public void delete(Vacation vacation) {
         databaseExecutor.execute(() -> vacationDAO.delete(vacation));
-
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -99,7 +146,6 @@ public class Repository {
 
     public void delete(Excursion excursion) {
         databaseExecutor.execute(() -> excursionDAO.delete(excursion));
-
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {

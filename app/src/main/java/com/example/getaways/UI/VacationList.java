@@ -23,6 +23,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 
 public class VacationList extends AppCompatActivity {
+    Repository repository;
+    List<Vacation> vacationList;
+    VacationAdapter vacationAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +44,22 @@ public class VacationList extends AppCompatActivity {
             startActivity(vacationDetailsIntent);
         });
 
-        Repository repository = new Repository(getApplication());
-        VacationAdapter vacationAdapter = new VacationAdapter(this);
-        List<Vacation> vacationList = repository.getAllVacations();
+        repository = new Repository(getApplication());
+        vacationAdapter = new VacationAdapter(this);
+        vacationList = repository.getAllVacations();
         RecyclerView recyclerView = findViewById(R.id.rv_vacation_list_items);
         recyclerView.setAdapter(vacationAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        vacationAdapter.setVacations(vacationList);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        repository = new Repository(getApplication());
+        // Fetch the updated list of vacations from the repository
+        vacationList = repository.getAllVacations(); // Example method to get data
+        // Update the adapter with the new data
         vacationAdapter.setVacations(vacationList);
     }
 

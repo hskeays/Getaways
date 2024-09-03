@@ -26,6 +26,12 @@ public interface ExcursionDAO {
     @Query("SELECT * FROM excursions ORDER BY id ASC;")
     List<Excursion> getAllExcursions();
 
+    @Query("SELECT * FROM excursions WHERE id = :id LIMIT 1")
+    Excursion getExcursionByID(int id);
+
     @Query("SELECT * FROM excursions WHERE vacationID=:vacation ORDER BY id ASC;")
     List<Excursion> getAssociatedExcursions(int vacation);
+
+    @Query("SELECT EXISTS(SELECT * FROM excursions WHERE id = :id LIMIT 1)")
+    boolean excursionExists(int id);
 }

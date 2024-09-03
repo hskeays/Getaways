@@ -24,4 +24,10 @@ public interface VacationDAO {
 
     @Query("SELECT * FROM vacations ORDER BY id ASC")
     List<Vacation> getAllVacations();
+
+    @Query("SELECT * FROM vacations WHERE id = :id LIMIT 1")
+    Vacation getVacationByID(int id);
+
+    @Query("SELECT EXISTS(SELECT * FROM vacations WHERE id = :id LIMIT 1)")
+    boolean vacationExists(int id);
 }

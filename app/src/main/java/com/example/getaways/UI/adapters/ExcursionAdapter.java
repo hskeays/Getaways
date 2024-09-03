@@ -38,9 +38,10 @@ public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.Excu
     public void onBindViewHolder(@NonNull ExcursionAdapter.ExcursionViewHolder holder, int position) {
         Excursion current = excursions.get(position);
         String title = current.getExcursionTitle();
+        String excursionDate = current.getExcursionDate();
         int vacationID = current.getVacationID();
         holder.excursionTextView.setText(title);
-        holder.excursionTextViewVacationID.setText(Integer.toString(vacationID));
+        holder.excursionTextViewDate.setText(excursionDate);
     }
 
     @Override
@@ -55,12 +56,12 @@ public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.Excu
 
     public class ExcursionViewHolder extends RecyclerView.ViewHolder {
         private final TextView excursionTextView;
-        private final TextView excursionTextViewVacationID;
+        private final TextView excursionTextViewDate;
 
         public ExcursionViewHolder(@NonNull View itemView) {
             super(itemView);
             excursionTextView = itemView.findViewById(R.id.tv_excursion_list_item);
-            excursionTextViewVacationID = itemView.findViewById(R.id.tv_excursion_list_item_count);
+            excursionTextViewDate = itemView.findViewById(R.id.tv_excursion_list_item_date);
             excursionTextView.setOnClickListener(view -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
