@@ -25,7 +25,6 @@ import java.util.Calendar;
 import java.util.List;
 
 public class VacationDetails extends AppCompatActivity {
-    Repository repository;
     private Button btnPickStartDate;
     private Button btnPickEndDate;
 
@@ -54,10 +53,12 @@ public class VacationDetails extends AppCompatActivity {
         });
 
         int vacationID = getIntent().getIntExtra("ID", 0);
-        repository = new Repository(getApplication());
-        ExcursionAdapter excursionAdapter = new ExcursionAdapter(this);
-        List<Excursion> excursionList = repository.getAssociatedExcursions(vacationID);
+
+        Repository repository = new Repository(getApplication());
         RecyclerView recyclerView = findViewById(R.id.rv_excursion_list_items);
+        ExcursionAdapter excursionAdapter = new ExcursionAdapter(this);
+
+        List<Excursion> excursionList = repository.getAssociatedExcursions(vacationID);
         recyclerView.setAdapter(excursionAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         excursionAdapter.setExcursions(excursionList);
