@@ -44,23 +44,23 @@ public class VacationList extends AppCompatActivity {
             startActivity(vacationDetailsIntent);
         });
 
+        // Initialize repository and adapter
         repository = new Repository(getApplication());
         vacationAdapter = new VacationAdapter(this);
-        vacationList = repository.getAllVacations();
+
+        // Set up RecyclerView
         RecyclerView recyclerView = findViewById(R.id.rv_vacation_list_items);
         recyclerView.setAdapter(vacationAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        vacationAdapter.setVacations(vacationList);
+
+        // Observe LiveData and update adapter
+        repository.getAllVacations().observe(this, vacationList -> vacationAdapter.setVacations(vacationList));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        repository = new Repository(getApplication());
-        // Fetch the updated list of vacations from the repository
-        vacationList = repository.getAllVacations(); // Example method to get data
-        // Update the adapter with the new data
-        vacationAdapter.setVacations(vacationList);
+        repository.getAllVacations().observe(this, vacationList -> vacationAdapter.setVacations(vacationList));
     }
 
     @Override

@@ -1,7 +1,8 @@
 package com.example.getaways.database;
 
-
 import android.app.Application;
+
+import androidx.lifecycle.LiveData;
 
 import com.example.getaways.dao.ExcursionDAO;
 import com.example.getaways.dao.VacationDAO;
@@ -17,12 +18,6 @@ public class Repository {
     static final ExecutorService databaseExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
     private final VacationDAO vacationDAO;
     private final ExcursionDAO excursionDAO;
-    private List<Vacation> allVacations;
-    private Vacation vacation;
-    private Excursion excursion;
-    private List<Excursion> allExcursions;
-    private boolean vacationExists;
-    private boolean excursionExists;
 
     public Repository(Application application) {
         DatabaseBuilder db = DatabaseBuilder.getDatabase(application);
@@ -31,74 +26,32 @@ public class Repository {
     }
 
     // GET **********************
-    public List<Vacation> getAllVacations() {
-        databaseExecutor.execute(() -> allVacations = vacationDAO.getAllVacations());
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return allVacations;
+    public LiveData<List<Vacation>> getAllVacations() {
+        return vacationDAO.getAllVacations(); // Returns LiveData directly from DAO
     }
 
-    public Vacation getVacationByID(int vacationID) {
-        databaseExecutor.execute(() -> vacation = vacationDAO.getVacationByID(vacationID));
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return vacation;
+    public LiveData<Vacation> getVacationByID(int vacationID) {
+        return vacationDAO.getVacationByID(vacationID); // Returns LiveData directly from DAO
     }
 
-    public Excursion getExcursionByID(int excursionID) {
-        databaseExecutor.execute(() -> excursion = excursionDAO.getExcursionByID(excursionID));
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return excursion;
+    public LiveData<Excursion> getExcursionByID(int excursionID) {
+        return excursionDAO.getExcursionByID(excursionID); // Returns LiveData directly from DAO
     }
 
-    public List<Excursion> getAllExcursions() {
-        databaseExecutor.execute(() -> allExcursions = excursionDAO.getAllExcursions());
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return allExcursions;
+    public LiveData<List<Excursion>> getAllExcursions() {
+        return excursionDAO.getAllExcursions(); // Returns LiveData directly from DAO
     }
 
-    public List<Excursion> getAssociatedExcursions(int id) {
-        databaseExecutor.execute(() -> allExcursions = excursionDAO.getAssociatedExcursions(id));
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return allExcursions;
+    public LiveData<List<Excursion>> getAssociatedExcursions(int vacationID) {
+        return excursionDAO.getAssociatedExcursions(vacationID); // Returns LiveData directly from DAO
     }
 
-    public Boolean vacationExists(int vacationID) {
-        databaseExecutor.execute(() -> vacationExists = vacationDAO.vacationExists(vacationID));
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return vacationExists;
+    public LiveData<Boolean> vacationExists(int vacationID) {
+        return vacationDAO.vacationExists(vacationID); // Returns LiveData directly from DAO
     }
 
-    public Boolean excursionExists(int excursionID) {
-        databaseExecutor.execute(() -> excursionExists = excursionDAO.excursionExists(excursionID));
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return excursionExists;
+    public LiveData<Boolean> excursionExists(int excursionID) {
+        return excursionDAO.excursionExists(excursionID); // Returns LiveData directly from DAO
     }
 
     // INSERT *********************
@@ -108,48 +61,23 @@ public class Repository {
 
     public void insert(Excursion excursion) {
         databaseExecutor.execute(() -> excursionDAO.insert(excursion));
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     // UPDATE *************************
     public void update(Vacation vacation) {
         databaseExecutor.execute(() -> vacationDAO.update(vacation));
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public void update(Excursion excursion) {
         databaseExecutor.execute(() -> excursionDAO.update(excursion));
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     // DELETE *********************
     public void delete(Vacation vacation) {
         databaseExecutor.execute(() -> vacationDAO.delete(vacation));
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public void delete(Excursion excursion) {
         databaseExecutor.execute(() -> excursionDAO.delete(excursion));
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }

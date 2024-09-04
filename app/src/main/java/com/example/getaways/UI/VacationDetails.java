@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -20,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.getaways.R;
 import com.example.getaways.UI.adapters.ExcursionAdapter;
 import com.example.getaways.database.Repository;
-import com.example.getaways.entities.Excursion;
 import com.example.getaways.entities.Vacation;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -28,18 +28,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 public class VacationDetails extends AppCompatActivity {
     Repository repository;
-    List<Excursion> excursionList;
     ExcursionAdapter excursionAdapter;
     private EditText etvVacationTitle;
     private EditText etvHotelName;
     private Button btnPickStartDate;
     private Button btnPickEndDate;
-    private Button btnSave;
-    private Button btnDelete;
     private Button btnAlert;
 
     @Override
@@ -52,6 +48,9 @@ public class VacationDetails extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Initialize repository
+        repository = new Repository(getApplication());
 
         // Get extras from previous intent
         int vacationID = getIntent().getIntExtra("ID", 0);
@@ -70,10 +69,10 @@ public class VacationDetails extends AppCompatActivity {
         btnPickEndDate = findViewById(R.id.btn_end_date_picker);
         btnPickEndDate.setOnClickListener(view -> showDatePickerDialog(btnPickEndDate));
 
-        btnSave = findViewById(R.id.btn_save_vacation);
+        Button btnSave = findViewById(R.id.btn_save_vacation);
         btnSave.setOnClickListener(view -> handleSaveButtonClick(vacationID));
 
-        btnDelete = findViewById(R.id.btn_delete_vacation);
+        Button btnDelete = findViewById(R.id.btn_delete_vacation);
         btnDelete.setOnClickListener(view -> handleDeleteButtonClick(vacationID));
 
         // Initialize FAB, set on click listener to start ExcursionDetails activity
@@ -96,28 +95,28 @@ public class VacationDetails extends AppCompatActivity {
         }
 
         // Show associated excursions in recycler view
-        repository = new Repository(getApplication());
         RecyclerView recyclerView = findViewById(R.id.rv_excursion_list_items);
         excursionAdapter = new ExcursionAdapter(this);
-        excursionList = repository.getAssociatedExcursions(vacationID);
         recyclerView.setAdapter(excursionAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        excursionAdapter.setExcursions(excursionList);
+
+        // Observe associated excursions
+        repository.getAssociatedExcursions(vacationID)
+                  .observe(this, excursions -> excursionAdapter.setExcursions(excursions));
     }
+
 
     @Override
     protected void onResume() {
         super.onResume();
         repository = new Repository(getApplication());
-        // Fetch the updated list of vacations from the repository
-        excursionList = repository.getAllExcursions(); // Example method to get data
-        // Update the adapter with the new data
-        excursionAdapter.setExcursions(excursionList);
+
+        repository.getAllExcursions().observe(this, excursions -> excursionAdapter.setExcursions(excursions));
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.appbar_menu, menu); // Inflate the app bar menu
+        getMenuInflater().inflate(R.menu.appbar_menu, menu);
         return true;
     }
 
@@ -182,16 +181,29 @@ public class VacationDetails extends AppCompatActivity {
     }
 
     private void handleDeleteButtonClick(int vacationID) {
-        // TODO: create confirmation dialog for deletion confirmation
         repository = new Repository(getApplication());
-        Vacation vacation = repository.getVacationByID(vacationID);
-        if (repository.vacationExists(vacationID)) {
-            repository.delete(vacation);
-            Toast.makeText(this, "Successfully deleted vacation.", Toast.LENGTH_SHORT).show();
-            finish();
-        } else {
-            Toast.makeText(this, "Failed to delete vacation.", Toast.LENGTH_SHORT).show();
-        }
+
+        // Check if the vacation exists
+        repository.vacationExists(vacationID).observe(this, exists -> {
+            if (exists) {
+                // Get the vacation to delete
+                repository.getVacationByID(vacationID).observe(this, vacation -> {
+                    if (vacation != null) {
+                        // Show confirmation dialog before deletion
+                        new AlertDialog.Builder(this).setTitle("Delete Vacation")
+                                                     .setMessage("Are you sure you want to delete this vacation?")
+                                                     .setPositiveButton("Yes", (dialog, which) -> {
+                                                         repository.delete(vacation);
+                                                         Toast.makeText(this, "Successfully deleted vacation.", Toast.LENGTH_SHORT)
+                                                              .show();
+                                                         finish();
+                                                     }).setNegativeButton("No", null).show();
+                    }
+                });
+            } else {
+                Toast.makeText(this, "Failed to delete vacation. Vacation does not exist.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     // Below are methods to normalize and validate date inputs

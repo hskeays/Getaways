@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -28,9 +29,6 @@ public class ExcursionDetails extends AppCompatActivity {
     private Repository repository;
     private EditText etvExcursionTitle;
     private Button btnPickExcursionDate;
-    private Button btnSave;
-    private Button btnDelete;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +55,10 @@ public class ExcursionDetails extends AppCompatActivity {
         btnPickExcursionDate = findViewById(R.id.btn_excursion_date_picker);
         btnPickExcursionDate.setOnClickListener(view -> showDatePickerDialog(btnPickExcursionDate));
 
-        btnSave = findViewById(R.id.btn_save_excursion);
+        Button btnSave = findViewById(R.id.btn_save_excursion);
         btnSave.setOnClickListener(view -> handleSaveButtonClick(excursionID, vacationID));
 
-        btnDelete = findViewById(R.id.btn_delete_excursion);
+        Button btnDelete = findViewById(R.id.btn_delete_excursion);
         btnDelete.setOnClickListener(view -> handleDeleteButtonClick(excursionID));
 
         // If vacation clicked and exists, prefill details in views
@@ -138,17 +136,32 @@ public class ExcursionDetails extends AppCompatActivity {
     }
 
     private void handleDeleteButtonClick(int excursionID) {
-        // TODO: create confirmation dialog for deletion confirmation
         repository = new Repository(getApplication());
-        Excursion excursion = repository.getExcursionByID(excursionID);
-        if (repository.excursionExists(excursionID)) {
-            repository.delete(excursion);
-            Toast.makeText(this, "Successfully deleted excursion.", Toast.LENGTH_SHORT).show();
-            finish();
-        } else {
-            Toast.makeText(this, "Failed to delete excursion.", Toast.LENGTH_SHORT).show();
-        }
+
+        // Check if the excursion exists
+        repository.excursionExists(excursionID).observe(this, exists -> {
+            if (exists != null && exists) {
+                // Get the excursion to delete
+                repository.getExcursionByID(excursionID).observe(this, excursion -> {
+                    if (excursion != null) {
+                        // Show confirmation dialog before deletion
+                        new AlertDialog.Builder(this).setTitle("Delete Excursion")
+                                                     .setMessage("Are you sure you want to delete this excursion?")
+                                                     .setPositiveButton("Yes", (dialog, which) -> {
+                                                         repository.delete(excursion);
+                                                         Toast.makeText(this, "Successfully deleted excursion.", Toast.LENGTH_SHORT)
+                                                              .show();
+                                                         finish();
+                                                     }).setNegativeButton("No", null).show();
+                    }
+                });
+            } else {
+                Toast.makeText(this, "Failed to delete excursion. Excursion does not exist.", Toast.LENGTH_SHORT)
+                     .show();
+            }
+        });
     }
+
 
     private String normalizeDate(String date) {
         String[] parts = date.split("/");
