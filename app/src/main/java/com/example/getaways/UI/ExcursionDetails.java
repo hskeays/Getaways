@@ -41,6 +41,9 @@ public class ExcursionDetails extends AppCompatActivity {
             return insets;
         });
 
+        // Initialize repository
+        repository = new Repository(getApplication());
+
         // Get extras from previous intent
         int excursionID = getIntent().getIntExtra("ID", 0);
         String excursionDate = getIntent().getStringExtra("EXCURSION_DATE");
@@ -105,8 +108,6 @@ public class ExcursionDetails extends AppCompatActivity {
     }
 
     private void handleSaveButtonClick(int excursionID, int vacationID) {
-        repository = new Repository(getApplication());
-
         String excursionTitle = etvExcursionTitle.getText().toString();
         String excursionDate = btnPickExcursionDate.getText().toString();
         String vacationStartDate = getIntent().getStringExtra("VACATION_START_DATE");
@@ -136,8 +137,6 @@ public class ExcursionDetails extends AppCompatActivity {
     }
 
     private void handleDeleteButtonClick(int excursionID) {
-        repository = new Repository(getApplication());
-
         // Check if the excursion exists
         repository.excursionExists(excursionID).observe(this, exists -> {
             if (exists != null && exists) {

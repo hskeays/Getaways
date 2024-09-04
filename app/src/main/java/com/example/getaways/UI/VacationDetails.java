@@ -109,8 +109,6 @@ public class VacationDetails extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        repository = new Repository(getApplication());
-
         repository.getAllExcursions().observe(this, excursions -> excursionAdapter.setExcursions(excursions));
     }
 
@@ -151,8 +149,6 @@ public class VacationDetails extends AppCompatActivity {
     }
 
     private void handleSaveButtonClick(int vacationID) {
-        repository = new Repository(getApplication());
-
         String vacationTitle = etvVacationTitle.getText().toString();
         String hotelName = etvHotelName.getText().toString();
         String startDate = btnPickStartDate.getText().toString();
@@ -181,8 +177,6 @@ public class VacationDetails extends AppCompatActivity {
     }
 
     private void handleDeleteButtonClick(int vacationID) {
-        repository = new Repository(getApplication());
-
         // Check if the vacation exists
         repository.vacationExists(vacationID).observe(this, exists -> {
             if (exists) {

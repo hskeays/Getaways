@@ -27,31 +27,31 @@ public class Repository {
 
     // GET **********************
     public LiveData<List<Vacation>> getAllVacations() {
-        return vacationDAO.getAllVacations(); // Returns LiveData directly from DAO
+        return vacationDAO.getAllVacations();
     }
 
     public LiveData<Vacation> getVacationByID(int vacationID) {
-        return vacationDAO.getVacationByID(vacationID); // Returns LiveData directly from DAO
+        return vacationDAO.getVacationByID(vacationID);
     }
 
     public LiveData<Excursion> getExcursionByID(int excursionID) {
-        return excursionDAO.getExcursionByID(excursionID); // Returns LiveData directly from DAO
+        return excursionDAO.getExcursionByID(excursionID);
     }
 
     public LiveData<List<Excursion>> getAllExcursions() {
-        return excursionDAO.getAllExcursions(); // Returns LiveData directly from DAO
+        return excursionDAO.getAllExcursions();
     }
 
     public LiveData<List<Excursion>> getAssociatedExcursions(int vacationID) {
-        return excursionDAO.getAssociatedExcursions(vacationID); // Returns LiveData directly from DAO
+        return excursionDAO.getAssociatedExcursions(vacationID);
     }
 
     public LiveData<Boolean> vacationExists(int vacationID) {
-        return vacationDAO.vacationExists(vacationID); // Returns LiveData directly from DAO
+        return vacationDAO.vacationExists(vacationID);
     }
 
     public LiveData<Boolean> excursionExists(int excursionID) {
-        return excursionDAO.excursionExists(excursionID); // Returns LiveData directly from DAO
+        return excursionDAO.excursionExists(excursionID);
     }
 
     // INSERT *********************
