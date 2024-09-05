@@ -37,8 +37,6 @@ public class VacationDetails extends AppCompatActivity {
     private EditText etvHotelName;
     private Button btnPickStartDate;
     private Button btnPickEndDate;
-    //TODO: implement alerts
-    private Button btnAlert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +58,7 @@ public class VacationDetails extends AppCompatActivity {
         String hotelName = getIntent().getStringExtra("HOTEL_NAME");
         String startDate = getIntent().getStringExtra("START_DATE");
         String endDate = getIntent().getStringExtra("END_DATE");
-
-        // Initialize views, set on click listeners for date picker buttons
+        // Initialize views/buttons, set on click listeners
         etvVacationTitle = findViewById(R.id.etv_vacation_title);
         etvHotelName = findViewById(R.id.etv_hotel_name);
         btnPickStartDate = findViewById(R.id.btn_start_date_picker);
@@ -72,6 +69,15 @@ public class VacationDetails extends AppCompatActivity {
         btnSave.setOnClickListener(view -> handleSaveButtonClick());
         Button btnDelete = findViewById(R.id.btn_delete_vacation);
         btnDelete.setOnClickListener(view -> handleDeleteButtonClick(vacationID));
+
+        //TODO: implement alert feature
+        Button btnAlert = findViewById(R.id.btn_alert_vacation);
+        //btnAlert.setOnClickListener(view -> handleAlertButtonClick());
+
+        //TODO: implement share feature
+        Button btnShare = findViewById(R.id.btn_share_vacation);
+        btnShare.setOnClickListener(view -> handleShareButtonClick());
+
         FloatingActionButton addFloatingActionButton = findViewById(R.id.fab_add_vacation_details);
         addFloatingActionButton.setOnClickListener(view -> handleFabButtonClick());
 
@@ -174,6 +180,28 @@ public class VacationDetails extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void handleShareButtonClick() {
+        int vacationID = getIntent().getIntExtra("ID", 0);
+        String vacationTitle = etvVacationTitle.getText().toString();
+        String hotelName = etvHotelName.getText().toString();
+        String startDate = btnPickStartDate.getText().toString();
+        String endDate = btnPickEndDate.getText().toString();
+
+        if (!isValidVacation(vacationTitle, hotelName, startDate, endDate)) {
+            Toast.makeText(this, "Invalid input, please try again.", Toast.LENGTH_SHORT).show();
+        } else if (vacationID == 0) {
+            new AlertDialog.Builder(this).setTitle("Save Vacation").setMessage("The vacation must first be saved.").setPositiveButton("Okay", (dialog, which) -> dialog.dismiss()).setIcon(android.R.drawable.ic_dialog_alert).show();
+        } else {
+            Intent shareIntent = new Intent(VacationDetails.this, VacationShare.class);
+            shareIntent.putExtra("VACATION_ID", vacationID);
+            shareIntent.putExtra("VACATION_TITLE", vacationTitle);
+            shareIntent.putExtra("HOTEL_NAME", hotelName);
+            shareIntent.putExtra("VACATION_START_DATE", startDate);
+            shareIntent.putExtra("VACATION_END_DATE", endDate);
+            startActivity(shareIntent);
+        }
     }
 
     private void handleFabButtonClick() {

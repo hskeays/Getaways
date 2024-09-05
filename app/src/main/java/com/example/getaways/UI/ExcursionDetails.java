@@ -44,7 +44,7 @@ public class ExcursionDetails extends AppCompatActivity {
         // Initialize repository
         repository = new Repository(getApplication());
 
-        // Get extras from previous intent
+        // Get extras from previous activity
         int excursionID = getIntent().getIntExtra("ID", 0);
         String excursionDate = getIntent().getStringExtra("EXCURSION_DATE");
         String excursionTitle = getIntent().getStringExtra("EXCURSION_TITLE");
@@ -144,19 +144,15 @@ public class ExcursionDetails extends AppCompatActivity {
                 repository.getExcursionByID(excursionID).observe(this, excursion -> {
                     if (excursion != null) {
                         // Show confirmation dialog before deletion
-                        new AlertDialog.Builder(this).setTitle("Delete Excursion")
-                                                     .setMessage("Are you sure you want to delete this excursion?")
-                                                     .setPositiveButton("Yes", (dialog, which) -> {
-                                                         repository.delete(excursion);
-                                                         Toast.makeText(this, "Successfully deleted excursion.", Toast.LENGTH_SHORT)
-                                                              .show();
-                                                         finish();
-                                                     }).setNegativeButton("No", null).show();
+                        new AlertDialog.Builder(this).setTitle("Delete Excursion").setMessage("Are you sure you want to delete this excursion?").setPositiveButton("Yes", (dialog, which) -> {
+                            repository.delete(excursion);
+                            Toast.makeText(this, "Successfully deleted excursion.", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }).setNegativeButton("No", null).show();
                     }
                 });
             } else {
-                Toast.makeText(this, "Failed to delete excursion. Excursion does not exist.", Toast.LENGTH_SHORT)
-                     .show();
+                Toast.makeText(this, "Failed to delete excursion. Excursion does not exist.", Toast.LENGTH_SHORT).show();
             }
         });
     }

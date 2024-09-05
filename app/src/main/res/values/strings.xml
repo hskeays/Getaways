@@ -28,4 +28,8 @@
     <string name="no_excursion_name">No excursion name</string>
     <string name="placeholder">PLACEHOLDER</string>
     <string name="no_current_excursions">No current excursions</string>
+    <string name="share">Share</string>
+    <string name="enter_your_message_below">Enter your message below:</string>
+    <string name="type_your_message_here">Type your message here</string>
+    <string name="excursions">Excursions:</string>
 </resources>
