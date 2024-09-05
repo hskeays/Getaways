@@ -31,4 +31,7 @@ public interface VacationDAO {
 
     @Query("SELECT EXISTS(SELECT * FROM vacations WHERE id = :id LIMIT 1)")
     LiveData<Boolean> vacationExists(int id);
+
+    @Query(("SELECT id FROM vacations ORDER BY id DESC LIMIT 1"))
+    LiveData<Integer> getLastInsertedVacationID();
 }

@@ -49,8 +49,8 @@ public class ExcursionDetails extends AppCompatActivity {
         String excursionDate = getIntent().getStringExtra("EXCURSION_DATE");
         String excursionTitle = getIntent().getStringExtra("EXCURSION_TITLE");
         int vacationID = getIntent().getIntExtra("VACATION_ID", 0);
-        String vacationStartDate = getIntent().getStringExtra("VACATION_START_DATE");
-        String vacationEndDate = getIntent().getStringExtra("VACATION_END_DATE");
+        //String vacationStartDate = getIntent().getStringExtra("VACATION_START_DATE");
+        //String vacationEndDate = getIntent().getStringExtra("VACATION_END_DATE");
 
         // Initialize views and set on click listeners
         etvExcursionTitle = findViewById(R.id.etv_enter_excursion_title);

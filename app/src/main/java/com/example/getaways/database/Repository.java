@@ -80,4 +80,8 @@ public class Repository {
     public void delete(Excursion excursion) {
         databaseExecutor.execute(() -> excursionDAO.delete(excursion));
     }
+
+    public LiveData<Integer> getLastInsertedVacation() {
+        return vacationDAO.getLastInsertedVacationID();
+    }
 }

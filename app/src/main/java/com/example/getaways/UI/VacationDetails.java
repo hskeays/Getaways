@@ -27,6 +27,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 
 public class VacationDetails extends AppCompatActivity {
@@ -62,29 +63,16 @@ public class VacationDetails extends AppCompatActivity {
         // Initialize views, set on click listeners for date picker buttons
         etvVacationTitle = findViewById(R.id.etv_vacation_title);
         etvHotelName = findViewById(R.id.etv_hotel_name);
-
         btnPickStartDate = findViewById(R.id.btn_start_date_picker);
         btnPickStartDate.setOnClickListener(view -> showDatePickerDialog(btnPickStartDate));
-
         btnPickEndDate = findViewById(R.id.btn_end_date_picker);
         btnPickEndDate.setOnClickListener(view -> showDatePickerDialog(btnPickEndDate));
-
         Button btnSave = findViewById(R.id.btn_save_vacation);
-        btnSave.setOnClickListener(view -> handleSaveButtonClick(vacationID));
-
+        btnSave.setOnClickListener(view -> handleSaveButtonClick());
         Button btnDelete = findViewById(R.id.btn_delete_vacation);
         btnDelete.setOnClickListener(view -> handleDeleteButtonClick(vacationID));
-
-        // Initialize FAB, set on click listener to start ExcursionDetails activity
-        //TODO: Add dialog asking user to first save the vacation before adding excursions
         FloatingActionButton addFloatingActionButton = findViewById(R.id.fab_add_vacation_details);
-        addFloatingActionButton.setOnClickListener(view -> {
-            Intent excursionDetailsIntent = new Intent(VacationDetails.this, ExcursionDetails.class);
-            excursionDetailsIntent.putExtra("VACATION_ID", vacationID);
-            excursionDetailsIntent.putExtra("VACATION_START_DATE", startDate);
-            excursionDetailsIntent.putExtra("VACATION_END_DATE", endDate);
-            startActivity(excursionDetailsIntent);
-        });
+        addFloatingActionButton.setOnClickListener(view -> handleFabButtonClick());
 
         // If vacation clicked and exists, prefill details in views
         if (vacationID != 0) {
@@ -101,15 +89,20 @@ public class VacationDetails extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Observe associated excursions
-        repository.getAssociatedExcursions(vacationID)
-                  .observe(this, excursions -> excursionAdapter.setExcursions(excursions));
+        repository.getAssociatedExcursions(vacationID).observe(this, excursions -> excursionAdapter.setExcursions(excursions));
     }
-
 
     @Override
     protected void onResume() {
+        // Populate associated excursions after saving new excursion
         super.onResume();
-        repository.getAllExcursions().observe(this, excursions -> excursionAdapter.setExcursions(excursions));
+        int vacationID = getIntent().getIntExtra("ID", 0);
+
+        if (vacationID != 0) {
+            repository.getAssociatedExcursions(vacationID).observe(this, excursions -> excursionAdapter.setExcursions(excursions));
+        } else {
+            excursionAdapter.setExcursions(Collections.emptyList());
+        }
     }
 
     @Override
@@ -148,32 +141,14 @@ public class VacationDetails extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    private void handleSaveButtonClick(int vacationID) {
+    private void handleSaveButtonClick() {
+        int vacationID = getIntent().getIntExtra("ID", 0);
         String vacationTitle = etvVacationTitle.getText().toString();
         String hotelName = etvHotelName.getText().toString();
         String startDate = btnPickStartDate.getText().toString();
         String endDate = btnPickEndDate.getText().toString();
 
-        // Check if vacation title and hotel name are not empty, start date is before end date, and start date is today or in the future
-        if (isValidVacation(vacationTitle, hotelName, startDate, endDate)) {
-            Vacation vacation;
-            if (vacationID == 0) {
-                vacation = new Vacation(vacationTitle, hotelName, startDate, endDate);
-                repository.insert(vacation);
-                Toast.makeText(this, "Successfully added new vacation", Toast.LENGTH_SHORT).show();
-            } else {
-                vacation = new Vacation(vacationTitle, hotelName, startDate, endDate);
-                vacation.setId(vacationID);
-                repository.update(vacation);
-                Toast.makeText(this, "Successfully updated vacation", Toast.LENGTH_SHORT).show();
-            }
-            //TODO Ask user if they want to add excursions, if no finish(), else click FAB programmatically ???
-            finish();
-        }
-        // TODO: Add more checks to provide more descriptive feedback to correct input
-        else {
-            Toast.makeText(this, "Invalid input, please try again.", Toast.LENGTH_SHORT).show();
-        }
+        saveOrUpdateValidVacation(vacationID, vacationTitle, hotelName, startDate, endDate);
     }
 
     private void handleDeleteButtonClick(int vacationID) {
@@ -184,14 +159,11 @@ public class VacationDetails extends AppCompatActivity {
                 repository.getVacationByID(vacationID).observe(this, vacation -> {
                     if (vacation != null) {
                         // Show confirmation dialog before deletion
-                        new AlertDialog.Builder(this).setTitle("Delete Vacation")
-                                                     .setMessage("Are you sure you want to delete this vacation?")
-                                                     .setPositiveButton("Yes", (dialog, which) -> {
-                                                         repository.delete(vacation);
-                                                         Toast.makeText(this, "Successfully deleted vacation.", Toast.LENGTH_SHORT)
-                                                              .show();
-                                                         finish();
-                                                     }).setNegativeButton("No", null).show();
+                        new AlertDialog.Builder(this).setTitle("Delete Vacation").setMessage("Are you sure you want to delete this vacation?").setPositiveButton("Yes", (dialog, which) -> {
+                            repository.delete(vacation);
+                            Toast.makeText(this, "Successfully deleted vacation.", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }).setNegativeButton("No", null).show();
                     }
                 });
             } else {
@@ -200,10 +172,65 @@ public class VacationDetails extends AppCompatActivity {
         });
     }
 
-    // Below are methods to normalize and validate date inputs
+    private void handleFabButtonClick() {
+        int vacationID = getIntent().getIntExtra("ID", 0);
+        String vacationTitle = etvVacationTitle.getText().toString();
+        String hotelName = etvHotelName.getText().toString();
+        String startDate = btnPickStartDate.getText().toString();
+        String endDate = btnPickEndDate.getText().toString();
+
+        if (!isValidVacation(vacationTitle, hotelName, startDate, endDate)) {
+            Toast.makeText(this, "Invalid input, please try again.", Toast.LENGTH_SHORT).show();
+        } else if (vacationID == 0) {
+            new AlertDialog.Builder(this).setTitle("Save Vacation").setMessage("The vacation must first be saved.").setPositiveButton("Okay", (dialog, which) -> dialog.dismiss()).setIcon(android.R.drawable.ic_dialog_alert).show();
+        } else {
+            Intent excursionDetailsIntent = new Intent(VacationDetails.this, ExcursionDetails.class);
+            excursionDetailsIntent.putExtra("VACATION_ID", vacationID);
+            excursionDetailsIntent.putExtra("VACATION_START_DATE", startDate);
+            excursionDetailsIntent.putExtra("VACATION_END_DATE", endDate);
+            startActivity(excursionDetailsIntent);
+        }
+    }
+
+    private boolean isValidVacation(String vacationTitle, String hotelName, String startDate, String endDate) {
+        return !startDate.equals("Pick a date") && !endDate.equals("Pick a date") && !vacationTitle.isEmpty() && !hotelName.isEmpty() && isDateOnOrAfterCurrentDate(startDate) && isDateBefore(startDate, endDate);
+    }
+
+    private void saveOrUpdateValidVacation(int vacationID, String vacationTitle, String hotelName, String startDate, String endDate) {
+        if (isValidVacation(vacationTitle, hotelName, startDate, endDate)) {
+            Vacation vacation = new Vacation(vacationTitle, hotelName, startDate, endDate);
+
+            if (vacationID == 0) {
+                // Add new vacation
+                repository.insert(vacation);
+                repository.getLastInsertedVacation().observe(this, newVacationID -> {
+                    // Update the vacationID in the intent
+                    getIntent().putExtra("ID", newVacationID);
+                    Toast.makeText(this, "Successfully added new vacation!", Toast.LENGTH_SHORT).show();
+                });
+            } else {
+                // Check if vacation exists asynchronously using LiveData
+                repository.vacationExists(vacationID).observe(this, exists -> {
+                    if (exists != null && exists) {
+                        // If it exists, update the vacation
+                        vacation.setId(vacationID);
+                        repository.update(vacation);
+                        Toast.makeText(this, "Successfully updated vacation!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Vacation does not exist.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        } else if (vacationTitle.isEmpty() || hotelName.isEmpty()) {
+            Toast.makeText(this, "Vacation title and hotel name fields cannot be empty.", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Invalid dates chosen, please try again.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // Normalizes String dates for input validation
     private String normalizeDate(String date) {
         String[] parts = date.split("/");
-
         String month = parts[0].length() == 1 ? "0" + parts[0] : parts[0];
         String day = parts[1].length() == 1 ? "0" + parts[1] : parts[1];
         String year = parts[2];
@@ -211,6 +238,7 @@ public class VacationDetails extends AppCompatActivity {
         return month + "/" + day + "/" + year;
     }
 
+    // Checks if a given date is before another given date
     private boolean isDateBefore(String date1, String date2) {
         // Normalize the dates to MM/dd/yyyy format
         date1 = normalizeDate(date1);
@@ -231,6 +259,7 @@ public class VacationDetails extends AppCompatActivity {
         }
     }
 
+    // Checks if a given date is on or after the current date
     private boolean isDateOnOrAfterCurrentDate(String date) {
         // Normalize the date to MM/dd/yyyy format
         date = normalizeDate(date);
@@ -258,9 +287,5 @@ public class VacationDetails extends AppCompatActivity {
             e.printStackTrace();
             return false;
         }
-    }
-
-    private boolean isValidVacation(String vacationTitle, String hotelName, String startDate, String endDate) {
-        return !vacationTitle.isEmpty() && !hotelName.isEmpty() && isDateOnOrAfterCurrentDate(startDate) && isDateBefore(startDate, endDate);
     }
 }
