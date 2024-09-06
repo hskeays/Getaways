@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,14 +20,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.getaways.R;
 import com.example.getaways.UI.adapters.ExcursionAdapter;
 import com.example.getaways.database.Repository;
+import com.example.getaways.entities.Excursion;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class VacationShare extends AppCompatActivity {
     ExcursionAdapter excursionAdapter;
-    private TextView tvVacationTitle;
-    private TextView tvHotelName;
-    private TextView tvStartDate;
-    private TextView tvEndDate;
-    private Repository repository;
+    private EditText etmlUserMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +41,7 @@ public class VacationShare extends AppCompatActivity {
         });
 
         // Initialize repository
-        repository = new Repository(getApplication());
+        Repository repository = new Repository(getApplication());
 
         // Get extras from previous activity
         int vacationID = getIntent().getIntExtra("VACATION_ID", 0);
@@ -48,14 +51,16 @@ public class VacationShare extends AppCompatActivity {
         String endDate = getIntent().getStringExtra("VACATION_END_DATE");
 
         // Initialize text views, set text from previous VacationDetails activity
-        tvVacationTitle = findViewById(R.id.tv_vacation_title_share);
+        TextView tvVacationTitle = findViewById(R.id.tv_vacation_title_share);
         tvVacationTitle.setText(vacationTitle);
-        tvHotelName = findViewById(R.id.tv_hotel_name_share);
+        TextView tvHotelName = findViewById(R.id.tv_hotel_name_share);
         tvHotelName.setText(hotelName);
-        tvStartDate = findViewById(R.id.tv_start_date_share);
+        TextView tvStartDate = findViewById(R.id.tv_start_date_share);
         tvStartDate.setText(startDate);
-        tvEndDate = findViewById(R.id.tv_end_date_share);
+        TextView tvEndDate = findViewById(R.id.tv_end_date_share);
         tvEndDate.setText(endDate);
+
+        etmlUserMessage = findViewById(R.id.etml_user_message);
 
         // Show associated excursions in recycler view
         RecyclerView recyclerView = findViewById(R.id.rv_excursion_list_items_share);
@@ -67,6 +72,54 @@ public class VacationShare extends AppCompatActivity {
         repository.getAssociatedExcursions(vacationID).observe(this, excursions -> excursionAdapter.setExcursions(excursions));
 
         //TODO: implement share button click handler, send all information to implicit email intent
+        Button btnShareEmail = findViewById(R.id.btn_share_email);
+        btnShareEmail.setOnClickListener(view -> handleShareEmailButtonClick());
+
+
+    }
+
+    private String constructEmailText(String userMessage, List<String> excursionTitles) {
+        String vacationTitle = getIntent().getStringExtra("VACATION_TITLE");
+        String hotelName = getIntent().getStringExtra("HOTEL_NAME");
+        String startDate = getIntent().getStringExtra("VACATION_START_DATE");
+        String endDate = getIntent().getStringExtra("VACATION_END_DATE");
+
+        String vacationFormatted = "Vacation title: " + vacationTitle + "\n";
+        String hotelFormatted = "Hotel name: " + hotelName + "\n";
+        String datesFormatted = "Start date: " + startDate + "\nEnd date: " + endDate + "\n\n";
+
+        // Format the list of excursions
+        StringBuilder excursionsFormatted = new StringBuilder();
+        excursionsFormatted.append("Excursions:\n");
+        for (String excursionTitle : excursionTitles) {
+            excursionsFormatted.append("- ").append(excursionTitle).append("\n");
+        }
+
+        return vacationFormatted + hotelFormatted + datesFormatted + excursionsFormatted + "\n" + userMessage;
+    }
+
+    private void handleShareEmailButtonClick() {
+        List<String> excursionTitlesAndDates = new ArrayList<>();
+        if (excursionAdapter.getExcursions() != null) {
+            for (Excursion excursion : excursionAdapter.getExcursions()) {
+                excursionTitlesAndDates.add(excursion.getExcursionTitle() + " " + excursion.getExcursionDate());
+            }
+        }
+
+        String userMessage = etmlUserMessage.getText().toString();
+        String formattedMessageBody = constructEmailText(userMessage, excursionTitlesAndDates);
+
+        String subject = "Details about upcoming vacation";
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.setType("text/plain");
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        emailIntent.putExtra(Intent.EXTRA_TEXT, formattedMessageBody);
+
+        try {
+            startActivity(Intent.createChooser(emailIntent, "Send email using..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(VacationShare.this, "No email clients installed.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
