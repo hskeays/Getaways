@@ -28,10 +28,10 @@
             android:ems="10"
             android:id="@+id/etv_enter_excursion_title"
             app:layout_constraintStart_toEndOf="@+id/tv_excursion_title"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_excursion_title"
             app:layout_constraintTop_toTopOf="@+id/tv_excursion_title"
             android:layout_marginStart="32dp"
-            app:layout_constraintVertical_bias="0.761" />
+            app:layout_constraintBottom_toBottomOf="@+id/tv_excursion_title"
+            android:layout_marginTop="4dp" />
 
     <TextView
             android:text="@string/date"

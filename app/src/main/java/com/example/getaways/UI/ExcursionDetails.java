@@ -152,7 +152,10 @@ public class ExcursionDetails extends AppCompatActivity {
                     }
                 });
             } else {
-                Toast.makeText(this, "Failed to delete excursion. Excursion does not exist.", Toast.LENGTH_SHORT).show();
+                // Only show this if the user hasn't just deleted the vacation
+                if (!isFinishing()) {
+                    Toast.makeText(this, "Failed to delete vacation. Vacation does not exist.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

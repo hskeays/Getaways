@@ -57,8 +57,9 @@
             android:id="@+id/tv_vacation_title_share"
             app:layout_constraintStart_toEndOf="@+id/tv_vacation_title_share_label"
             android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_vacation_title_share_label"
             app:layout_constraintTop_toTopOf="@+id/tv_vacation_title_share_label"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_vacation_title_share_label" />
+            android:layout_marginTop="4dp" />
 
     <TextView
             android:text="@string/placeholder"
@@ -67,7 +68,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/tv_hotel_name_share"
             app:layout_constraintStart_toStartOf="@+id/tv_vacation_title_share"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_hotel_name_share_label" />
+            app:layout_constraintBottom_toBottomOf="@+id/tv_hotel_name_share_label"
+            app:layout_constraintTop_toTopOf="@+id/tv_hotel_name_share_label"
+            android:layout_marginTop="4dp" />
 
     <TextView
             android:text="@string/placeholder"
@@ -76,7 +79,9 @@
             android:id="@+id/tv_start_date_share"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="@+id/tv_hotel_name_share"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_start_date_share_label" />
+            app:layout_constraintBottom_toBottomOf="@+id/tv_start_date_share_label"
+            app:layout_constraintTop_toTopOf="@+id/tv_start_date_share_label"
+            android:layout_marginTop="4dp" />
 
     <TextView
             android:text="@string/placeholder"
@@ -85,7 +90,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/tv_end_date_share"
             app:layout_constraintStart_toStartOf="@+id/tv_start_date_share"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_end_date_share_label" />
+            app:layout_constraintBottom_toBottomOf="@+id/tv_end_date_share_label"
+            app:layout_constraintTop_toTopOf="@+id/tv_end_date_share_label"
+            android:layout_marginTop="4dp" />
 
     <TextView
             android:text="@string/excursions"
@@ -106,7 +113,7 @@
             android:id="@+id/tv_enter_message_prompt"
             app:layout_constraintStart_toStartOf="@+id/tv_end_date_share_label"
             app:layout_constraintTop_toBottomOf="@+id/rv_excursion_list_items_share"
-            android:layout_marginTop="32dp" />
+            android:layout_marginTop="48dp" />
 
     <EditText
             android:layout_width="0dp"
@@ -136,7 +143,8 @@
             android:fadeScrollbars="false"
             app:layout_constraintTop_toTopOf="@+id/tv_excursions_share_label"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_end_date_share" />
+            app:layout_constraintStart_toStartOf="@+id/tv_end_date_share"
+            android:layout_marginTop="4dp" />
 
     <Button
             android:text="@string/share"

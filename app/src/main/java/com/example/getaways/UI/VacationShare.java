@@ -71,11 +71,8 @@ public class VacationShare extends AppCompatActivity {
         // Observe associated excursions
         repository.getAssociatedExcursions(vacationID).observe(this, excursions -> excursionAdapter.setExcursions(excursions));
 
-        //TODO: implement share button click handler, send all information to implicit email intent
         Button btnShareEmail = findViewById(R.id.btn_share_email);
         btnShareEmail.setOnClickListener(view -> handleShareEmailButtonClick());
-
-
     }
 
     private String constructEmailText(String userMessage, List<String> excursionTitles) {
