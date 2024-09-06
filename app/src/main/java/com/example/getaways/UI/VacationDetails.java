@@ -1,7 +1,10 @@
 package com.example.getaways.UI;
 
 import android.app.DatePickerDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -52,12 +55,16 @@ public class VacationDetails extends AppCompatActivity {
         // Initialize repository
         repository = new Repository(getApplication());
 
+        // Create notification channel
+        createNotificationChannel();
+
         // Get extras from previous intent
         int vacationID = getIntent().getIntExtra("ID", 0);
         String vacationTitle = getIntent().getStringExtra("VACATION_TITLE");
         String hotelName = getIntent().getStringExtra("HOTEL_NAME");
         String startDate = getIntent().getStringExtra("START_DATE");
         String endDate = getIntent().getStringExtra("END_DATE");
+
         // Initialize views/buttons, set on click listeners
         etvVacationTitle = findViewById(R.id.etv_vacation_title);
         etvHotelName = findViewById(R.id.etv_hotel_name);
@@ -70,11 +77,9 @@ public class VacationDetails extends AppCompatActivity {
         Button btnDelete = findViewById(R.id.btn_delete_vacation);
         btnDelete.setOnClickListener(view -> handleDeleteButtonClick(vacationID));
 
-        //TODO: implement alert feature
         Button btnAlert = findViewById(R.id.btn_alert_vacation);
-        //btnAlert.setOnClickListener(view -> handleAlertButtonClick());
+        btnAlert.setOnClickListener(view -> handleAlertButtonClick());
 
-        //TODO: implement share feature
         Button btnShare = findViewById(R.id.btn_share_vacation);
         btnShare.setOnClickListener(view -> handleShareButtonClick());
 
@@ -180,6 +185,28 @@ public class VacationDetails extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void handleAlertButtonClick() {
+        int vacationID = getIntent().getIntExtra("ID", 0);
+        String vacationTitle = etvVacationTitle.getText().toString();
+        String hotelName = etvHotelName.getText().toString();
+        String startDate = btnPickStartDate.getText().toString();
+        String endDate = btnPickEndDate.getText().toString();
+
+        if (!isValidVacation(vacationTitle, hotelName, startDate, endDate)) {
+            Toast.makeText(this, "Invalid input, please try again.", Toast.LENGTH_SHORT).show();
+        } else if (vacationID == 0) {
+            new AlertDialog.Builder(this).setTitle("Save Vacation").setMessage("The vacation must first be saved.").setPositiveButton("Okay", (dialog, which) -> dialog.dismiss()).setIcon(android.R.drawable.ic_dialog_alert).show();
+        } else {
+            Intent alertIntent = new Intent(VacationDetails.this, VacationAlert.class);
+            alertIntent.putExtra("VACATION_ID", vacationID);
+            alertIntent.putExtra("VACATION_TITLE", vacationTitle);
+            alertIntent.putExtra("HOTEL_NAME", hotelName);
+            alertIntent.putExtra("VACATION_START_DATE", startDate);
+            alertIntent.putExtra("VACATION_END_DATE", endDate);
+            startActivity(alertIntent);
+        }
     }
 
     private void handleShareButtonClick() {
@@ -319,6 +346,19 @@ public class VacationDetails extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Default Channel";
+            String description = "Channel for notifications";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel("CHANNEL_ID", name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
         }
     }
 }

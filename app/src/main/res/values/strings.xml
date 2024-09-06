@@ -1,11 +1,21 @@
 <resources>
+    <!-- App Title -->
     <string name="app_name">Getaways</string>
     <string name="welcome_to_getaways">Welcome to Getaways!</string>
-    <string name="content_description_airplane_icon">Airplane icon</string>
-    <string name="enter">Enter</string>
+
+    <!-- Navigation -->
+    <string name="Home">Home</string>
     <string name="Back">Back</string>
     <string name="add_floating_icon">Add floating icon</string>
-    <string name="Home">Home</string>
+
+    <!-- Actions -->
+    <string name="enter">Enter</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="share">Share</string>
+    <string name="set_alert">Set Alert</string>
+
+    <!-- Vacation Details -->
     <string name="vacation_list">Vacation List</string>
     <string name="vacation_details">Vacation Details</string>
     <string name="title">Title:</string>
@@ -16,20 +26,22 @@
     <string name="enter_hotel_name">Enter hotel name</string>
     <string name="enter_vacation_title">Enter vacation title</string>
     <string name="enter_a_new_vacation">Enter a new vacation</string>
+
+    <!-- Excursion Details -->
     <string name="excursion_title">Excursion Title</string>
     <string name="enter_excursion_title">Enter excursion title</string>
     <string name="date">Date:</string>
-    <string name="save">Save</string>
-    <string name="delete">Delete</string>
-    <string name="alert">Alert</string>
-    <string name="add_sample_data">Add sample data</string>
     <string name="current_excursions">Current excursions:</string>
     <string name="no_associated_vacation">No associated vacation</string>
     <string name="no_excursion_name">No excursion name</string>
-    <string name="placeholder">PLACEHOLDER</string>
     <string name="no_current_excursions">No current excursions</string>
-    <string name="share">Share</string>
+    <string name="excursions">Excursions:</string>
+
+    <!-- Messages -->
+    <string name="alert">Alert</string>
     <string name="enter_your_message_below">Enter your message below:</string>
     <string name="type_your_message_here">Type your message here</string>
-    <string name="excursions">Excursions:</string>
+
+    <!-- Placeholders -->
+    <string name="placeholder">PLACEHOLDER</string>
 </resources>
