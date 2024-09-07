@@ -58,17 +58,27 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:id="@+id/btn_save_excursion"
-            app:layout_constraintStart_toStartOf="@+id/tv_excursion_date"
             app:layout_constraintTop_toBottomOf="@+id/tv_excursion_date"
-            android:layout_marginTop="48dp" />
+            android:layout_marginTop="48dp"
+            app:layout_constraintEnd_toStartOf="@+id/btn_delete_excursion"
+            android:layout_marginEnd="8dp" />
 
     <Button
             android:text="@string/delete"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:id="@+id/btn_delete_excursion"
-            app:layout_constraintStart_toEndOf="@+id/btn_save_excursion"
             app:layout_constraintTop_toTopOf="@+id/btn_save_excursion"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+            android:text="@string/alert"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_alert_excursion"
+            app:layout_constraintStart_toEndOf="@+id/btn_delete_excursion"
+            app:layout_constraintTop_toTopOf="@+id/btn_delete_excursion"
             android:layout_marginStart="8dp" />
 
 

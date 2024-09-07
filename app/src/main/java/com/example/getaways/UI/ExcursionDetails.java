@@ -64,6 +64,9 @@ public class ExcursionDetails extends AppCompatActivity {
         Button btnDelete = findViewById(R.id.btn_delete_excursion);
         btnDelete.setOnClickListener(view -> handleDeleteButtonClick(excursionID));
 
+        Button btnAlert = findViewById(R.id.btn_alert_excursion);
+        btnAlert.setOnClickListener(view -> handleAlertButtonClick());
+
         // If vacation clicked and exists, prefill details in views
         if (excursionID != 0) {
             etvExcursionTitle.setText(excursionTitle);
@@ -107,6 +110,7 @@ public class ExcursionDetails extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+    // TODO: add more checks for invalid input with feedback
     private void handleSaveButtonClick(int excursionID, int vacationID) {
         String excursionTitle = etvExcursionTitle.getText().toString();
         String excursionDate = btnPickExcursionDate.getText().toString();
@@ -127,10 +131,6 @@ public class ExcursionDetails extends AppCompatActivity {
                 Toast.makeText(this, "Excursion successfully updated.", Toast.LENGTH_SHORT).show();
             }
             finish();
-        } else if (!isDateBetween(excursionDate, vacationStartDate, vacationEndDate)) {
-            Toast.makeText(this, "Excursion date must be between vacation dates.", Toast.LENGTH_SHORT).show();
-        } else if (excursionTitle.isEmpty()) {
-            Toast.makeText(this, "Excursion title cannot be empty.", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Invalid input, please try again.", Toast.LENGTH_SHORT).show();
         }
@@ -160,6 +160,21 @@ public class ExcursionDetails extends AppCompatActivity {
         });
     }
 
+    private void handleAlertButtonClick() {
+        int excursionID = getIntent().getIntExtra("ID", 0);
+        String excursionTitle = etvExcursionTitle.getText().toString();
+        String excursionDate = btnPickExcursionDate.getText().toString();
+
+        if (excursionID == 0) {
+            new AlertDialog.Builder(this).setTitle("Save Excursion").setMessage("The Excursion must first be saved.").setPositiveButton("Okay", (dialog, which) -> dialog.dismiss()).setIcon(android.R.drawable.ic_dialog_alert).show();
+        } else {
+            Intent alertIntent = new Intent(ExcursionDetails.this, ExcursionAlert.class);
+            alertIntent.putExtra("EXCURSION_ID", excursionID);
+            alertIntent.putExtra("EXCURSION_TITLE", excursionTitle);
+            alertIntent.putExtra("EXCURSION_DATE", excursionDate);
+            startActivity(alertIntent);
+        }
+    }
 
     private String normalizeDate(String date) {
         String[] parts = date.split("/");
@@ -196,6 +211,6 @@ public class ExcursionDetails extends AppCompatActivity {
     }
 
     private boolean isValidExcursion(String excursionTitle, String excursionDate, String vacationStartDate, String vacationEndDate) {
-        return !excursionTitle.isEmpty() && isDateBetween(excursionDate, vacationStartDate, vacationEndDate);
+        return !excursionTitle.isEmpty() && !excursionDate.equals("Pick a date") && isDateBetween(excursionDate, vacationStartDate, vacationEndDate);
     }
 }

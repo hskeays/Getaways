@@ -250,6 +250,7 @@ public class VacationDetails extends AppCompatActivity {
         return !startDate.equals("Pick a date") && !endDate.equals("Pick a date") && !vacationTitle.isEmpty() && !hotelName.isEmpty() && isDateOnOrAfterCurrentDate(startDate) && isDateBefore(startDate, endDate);
     }
 
+    // TODO: add more checks for invalid input with feedback
     private void saveOrUpdateValidVacation(int vacationID, String vacationTitle, String hotelName, String startDate, String endDate) {
         if (isValidVacation(vacationTitle, hotelName, startDate, endDate)) {
             Vacation vacation = new Vacation(vacationTitle, hotelName, startDate, endDate);

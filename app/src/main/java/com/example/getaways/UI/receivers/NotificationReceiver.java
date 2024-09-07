@@ -20,8 +20,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         Log.d("NotificationReceiver", "Notification received");
 
         // Build the notification
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "CHANNEL_ID").setSmallIcon(android.R.drawable.ic_dialog_alert)  // Ensure you have an icon
-                                                                                                  .setContentTitle("Vacation Reminder").setContentText(message).setPriority(NotificationCompat.PRIORITY_HIGH).setAutoCancel(true);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "CHANNEL_ID").setSmallIcon(android.R.drawable.ic_dialog_alert).setContentTitle("Getaways Reminder").setContentText(message).setPriority(NotificationCompat.PRIORITY_HIGH).setAutoCancel(true);
 
         // Check if the app has the required notification permission (Android 13+)
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED || android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.TIRAMISU) {

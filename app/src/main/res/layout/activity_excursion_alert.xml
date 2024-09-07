@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".UI.VacationShare">
+
+    <TextView
+            android:text="@string/title"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_excursion_title_alert_label"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp" />
+
+    <TextView
+            android:text="@string/date"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_excursion_date_alert_label"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@+id/tv_excursion_title_alert_label"
+            android:layout_marginTop="32dp"
+            app:layout_constraintStart_toStartOf="@+id/tv_excursion_title_alert_label" />
+
+
+    <TextView
+            android:text="@string/placeholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:id="@+id/tv_excursion_title_alert"
+            app:layout_constraintStart_toEndOf="@+id/tv_excursion_title_alert_label"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_excursion_title_alert_label"
+            app:layout_constraintTop_toTopOf="@+id/tv_excursion_title_alert_label"
+            android:layout_marginTop="4dp" />
+
+    <TextView
+            android:text="@string/placeholder"
+            android:layout_width="wrap_content"
+            android:textSize="20sp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_excursion_date_alert"
+            app:layout_constraintStart_toStartOf="@+id/tv_excursion_title_alert"
+            app:layout_constraintTop_toTopOf="@+id/tv_excursion_date_alert_label"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_excursion_date_alert_label"
+            android:layout_marginTop="4dp" />
+
+
+    <Button
+            android:text="@string/set_alert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_set_alerts_excursion"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="16dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

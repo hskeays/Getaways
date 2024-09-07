@@ -20,8 +20,14 @@
         <receiver android:name=".UI.receivers.NotificationReceiver" />
 
         <activity
+                android:name=".UI.ExcursionAlert"
+                android:exported="false"
+                android:label="Excursion Alert" />
+
+        <activity
                 android:name=".UI.VacationAlert"
-                android:exported="false" />
+                android:exported="false"
+                android:label="Vacation Alert" />
         <activity
                 android:name=".UI.VacationShare"
                 android:exported="false"
