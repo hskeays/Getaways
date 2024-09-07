@@ -109,7 +109,7 @@
             android:id="@+id/rv_excursion_list_items_alert"
             android:layout_width="0dp"
             android:layout_marginEnd="24dp"
-            android:layout_height="56dp"
+            android:layout_height="wrap_content"
             android:scrollbars="vertical"
             android:fadeScrollbars="false"
             app:layout_constraintTop_toTopOf="@+id/tv_excursions_alert_label"

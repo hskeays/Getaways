@@ -1,10 +1,7 @@
 package com.example.getaways.UI;
 
 import android.app.DatePickerDialog;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,9 +51,6 @@ public class VacationDetails extends AppCompatActivity {
 
         // Initialize repository
         repository = new Repository(getApplication());
-
-        // Create notification channel
-        createNotificationChannel();
 
         // Get extras from previous intent
         int vacationID = getIntent().getIntExtra("ID", 0);
@@ -269,17 +263,12 @@ public class VacationDetails extends AppCompatActivity {
                     Toast.makeText(this, "Successfully added new vacation!", Toast.LENGTH_SHORT).show();
                 });
             } else {
-                // Check if vacation exists asynchronously using LiveData
-                repository.vacationExists(vacationID).observe(this, exists -> {
-                    if (exists != null && exists) {
-                        // If it exists, update the vacation
-                        vacation.setId(vacationID);
-                        repository.update(vacation);
-                        Toast.makeText(this, "Successfully updated vacation!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(this, "Vacation does not exist.", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                // Directly update the vacation without LiveData observation
+                vacation.setId(vacationID);
+                repository.update(vacation);
+
+                // Display success message after updating
+                Toast.makeText(this, "Successfully updated vacation!", Toast.LENGTH_SHORT).show();
             }
         } else if (vacationTitle.isEmpty() || hotelName.isEmpty()) {
             Toast.makeText(this, "Vacation title and hotel name fields cannot be empty.", Toast.LENGTH_SHORT).show();
@@ -287,6 +276,7 @@ public class VacationDetails extends AppCompatActivity {
             Toast.makeText(this, "Invalid dates chosen, please try again.", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     // Normalizes String dates for input validation
     private String normalizeDate(String date) {
@@ -346,19 +336,6 @@ public class VacationDetails extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
             return false;
-        }
-    }
-
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Default Channel";
-            String description = "Channel for notifications";
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel("CHANNEL_ID", name, importance);
-            channel.setDescription(description);
-
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
         }
     }
 }

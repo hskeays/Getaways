@@ -2,6 +2,8 @@ package com.example.getaways.UI;
 
 import android.Manifest;
 import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -55,6 +58,9 @@ public class VacationAlert extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, REQUEST_CODE);
         }
 
+        // Create notification channel
+        createNotificationChannel();
+
         // Initialize repository
         Repository repository = new Repository(getApplication());
 
@@ -84,6 +90,7 @@ public class VacationAlert extends AppCompatActivity {
         // Observe associated excursions
         repository.getAssociatedExcursions(vacationID).observe(this, excursions -> excursionAdapter.setExcursions(excursions));
 
+        // Initialize and set on click handler to alert button
         Button btnAlert = findViewById(R.id.btn_set_alerts);
         btnAlert.setOnClickListener(view -> handleSetAlertButtonClick());
     }
@@ -110,21 +117,29 @@ public class VacationAlert extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Notification permission is required for alerts", Toast.LENGTH_LONG).show();
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
     private void handleSetAlertButtonClick() {
         String startDate = getIntent().getStringExtra("VACATION_START_DATE");
         String endDate = getIntent().getStringExtra("VACATION_END_DATE");
 
         // Schedule notifications
-        scheduleNotification(startDate, "Vacation Start Reminder");
-        scheduleNotification(endDate, "Vacation End Reminder");
+        scheduleNotification(startDate, "Vacation Start Reminder", 0);
+        scheduleNotification(endDate, "Vacation End Reminder", 1);
 
         Toast.makeText(this, "Notifications set for the start and end dates!", Toast.LENGTH_SHORT).show();
         finish();
     }
 
-    private void scheduleNotification(String dateString, String message) {
-        dateString = normalizeDate(dateString);
-
+    private void scheduleNotification(String dateString, String message, int requestCode) {
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
         try {
             Date date = sdf.parse(dateString);
@@ -133,35 +148,53 @@ public class VacationAlert extends AppCompatActivity {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(date);
 
+                // Set time of day to 8:00 AM
+                calendar.set(Calendar.HOUR_OF_DAY, 8);
+                calendar.set(Calendar.MINUTE, 0);
+                calendar.set(Calendar.SECOND, 0);
+
                 // Schedule the notification
-                setNotificationAlarm(calendar.getTimeInMillis(), message);
+                setNotificationAlarm(calendar.getTimeInMillis(), message, requestCode);
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
     }
 
-    private void setNotificationAlarm(long triggerTime, String message) {
+    private void setNotificationAlarm(long triggerTime, String message, int requestCode) {
         // Create an intent to trigger the notification
         Intent intent = new Intent(this, NotificationReceiver.class);
         intent.putExtra("NOTIFICATION_MESSAGE", message);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         // Use AlarmManager to trigger the notification at the specified time
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        if (alarmManager != null) {
-            alarmManager.set(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+        if (alarmManager != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            // Check if the app can schedule exact alarms
+            if (!alarmManager.canScheduleExactAlarms()) {
+                Toast.makeText(this, "Please enable exact alarms in app settings.", Toast.LENGTH_LONG).show();
+                // Open the settings where the user can grant permission
+                Intent settingsIntent = new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                startActivity(settingsIntent);
+            }
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
         }
     }
 
-    // Normalizes String dates for input validation
-    private String normalizeDate(String date) {
-        String[] parts = date.split("/");
-        String month = parts[0].length() == 1 ? "0" + parts[0] : parts[0];
-        String day = parts[1].length() == 1 ? "0" + parts[1] : parts[1];
-        String year = parts[2];
+    private void createNotificationChannel() {
+        String channelId = "CHANNEL_ID";
+        CharSequence name = "Vacation Reminders";
+        String description = "Notifications for vacation start and end dates";
+        int importance = NotificationManager.IMPORTANCE_HIGH;
 
-        return month + "/" + day + "/" + year;
+        NotificationChannel channel = new NotificationChannel(channelId, name, importance);
+        channel.setDescription(description);
+
+        Context context = getApplicationContext();
+        NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+        if (notificationManager != null) {
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }
