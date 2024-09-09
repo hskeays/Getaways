@@ -37,6 +37,7 @@ public class VacationDetails extends AppCompatActivity {
     private EditText etvHotelName;
     private Button btnPickStartDate;
     private Button btnPickEndDate;
+    private boolean isDeleteDialogCancelled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,12 +140,10 @@ public class VacationDetails extends AppCompatActivity {
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, selectedYear, selectedMonth, selectedDay) -> {
+        new DatePickerDialog(this, (view, selectedYear, selectedMonth, selectedDay) -> {
             String selectedDate = (selectedMonth + 1) + "/" + selectedDay + "/" + selectedYear;
             button.setText(selectedDate);
-        }, year, month, day);
-
-        datePickerDialog.show();
+        }, year, month, day).show();
     }
 
     private void handleSaveButtonClick() {
@@ -155,6 +154,7 @@ public class VacationDetails extends AppCompatActivity {
         String endDate = btnPickEndDate.getText().toString();
 
         saveOrUpdateValidVacation(vacationID, vacationTitle, hotelName, startDate, endDate);
+        isDeleteDialogCancelled = true;
     }
 
     private void handleDeleteButtonClick(int vacationID) {
@@ -163,13 +163,16 @@ public class VacationDetails extends AppCompatActivity {
             if (exists) {
                 // Get the vacation to delete
                 repository.getVacationByID(vacationID).observe(this, vacation -> {
-                    if (vacation != null) {
+                    if (vacation != null && !isDeleteDialogCancelled) {
                         // Show confirmation dialog before deletion
                         new AlertDialog.Builder(this).setTitle("Delete Vacation").setMessage("Are you sure you want to delete this vacation?").setPositiveButton("Yes", (dialog, which) -> {
                             repository.delete(vacation);
                             Toast.makeText(this, "Successfully deleted vacation.", Toast.LENGTH_SHORT).show();
                             finish();
-                        }).setNegativeButton("No", null).show();
+                        }).setNegativeButton("No", (dialog, which) -> {
+                            isDeleteDialogCancelled = true;
+                            dialog.dismiss();
+                        }).show();
                     }
                 });
             } else {
