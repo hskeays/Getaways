@@ -49,8 +49,8 @@ public class ExcursionDetails extends AppCompatActivity {
         String excursionDate = getIntent().getStringExtra("EXCURSION_DATE");
         String excursionTitle = getIntent().getStringExtra("EXCURSION_TITLE");
         int vacationID = getIntent().getIntExtra("VACATION_ID", 0);
-        //String vacationStartDate = getIntent().getStringExtra("VACATION_START_DATE");
-        //String vacationEndDate = getIntent().getStringExtra("VACATION_END_DATE");
+        String vacationStartDate = getIntent().getStringExtra("VACATION_START_DATE");
+        String vacationEndDate = getIntent().getStringExtra("VACATION_END_DATE");
 
         // Initialize views and set on click listeners
         etvExcursionTitle = findViewById(R.id.etv_enter_excursion_title);
@@ -110,7 +110,6 @@ public class ExcursionDetails extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    // TODO: add more checks for invalid input with feedback
     private void handleSaveButtonClick(int excursionID, int vacationID) {
         String excursionTitle = etvExcursionTitle.getText().toString();
         String excursionDate = btnPickExcursionDate.getText().toString();
@@ -131,8 +130,10 @@ public class ExcursionDetails extends AppCompatActivity {
                 Toast.makeText(this, "Excursion successfully updated.", Toast.LENGTH_SHORT).show();
             }
             finish();
+        } else if (excursionTitle.isEmpty()) {
+            Toast.makeText(this, "Excursion title field cannot be empty.", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "Invalid input, please try again.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Excursion date must be between " + vacationStartDate + " and " + vacationEndDate, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -154,7 +155,7 @@ public class ExcursionDetails extends AppCompatActivity {
             } else {
                 // Only show this if the user hasn't just deleted the vacation
                 if (!isFinishing()) {
-                    Toast.makeText(this, "Failed to delete vacation. Vacation does not exist.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Failed to delete excursion. Excursion does not exist.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -187,6 +188,11 @@ public class ExcursionDetails extends AppCompatActivity {
     }
 
     private boolean isDateBetween(String targetDate, String startDate, String endDate) {
+        // Check for empty input to avoid exception
+        if (startDate.equals("Pick a date") || endDate.equals("Pick a date") || targetDate.equals("Pick a date")) {
+            return false;
+        }
+
         // Normalize the dates to MM/dd/yyyy format
         targetDate = normalizeDate(targetDate);
         startDate = normalizeDate(startDate);
