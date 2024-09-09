@@ -18,7 +18,4 @@
     <item
             android:id="@+id/vacation_details"
             android:title="@string/vacation_details" />
-    <item
-            android:id="@+id/add_sample_data"
-            android:title="@string/add_sample_data" />
 </menu>
