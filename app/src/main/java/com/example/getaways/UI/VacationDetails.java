@@ -278,7 +278,6 @@ public class VacationDetails extends AppCompatActivity {
         }
     }
 
-    // TODO ignore isDateOnOrAfterCurrentDate(startDate) when sharing saved vacation
     private boolean isValidVacation(String vacationTitle, String hotelName, String startDate, String endDate) {
         return !startDate.equals("Pick a date") && !endDate.equals("Pick a date") && !vacationTitle.isEmpty() && !hotelName.isEmpty() && isDateOnOrAfterCurrentDate(startDate) && isDateBefore(startDate, endDate);
     }
