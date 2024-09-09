@@ -127,6 +127,7 @@ public class ExcursionAlert extends AppCompatActivity {
 //                calendar.set(Calendar.SECOND, 0);
 
                 // FOR TESTING, SET NOTIFICATION FOR 2 SECONDS FROM ALERT BEING SET
+
                 calendar.add(Calendar.SECOND, 2);
                 // Schedule the notification
                 setNotificationAlarm(calendar.getTimeInMillis());
@@ -137,9 +138,10 @@ public class ExcursionAlert extends AppCompatActivity {
     }
 
     private void setNotificationAlarm(long triggerTime) {
+        String excursionTitle = getIntent().getStringExtra("EXCURSION_TITLE");
         // Create an intent to trigger the notification
         Intent intent = new Intent(this, NotificationReceiver.class);
-        intent.putExtra("NOTIFICATION_MESSAGE", "Excursion Start Reminder");
+        intent.putExtra("NOTIFICATION_MESSAGE", "Excursion start reminder for: " + excursionTitle);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 3, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 

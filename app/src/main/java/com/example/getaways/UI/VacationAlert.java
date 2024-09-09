@@ -128,12 +128,13 @@ public class VacationAlert extends AppCompatActivity {
     }
 
     private void handleSetAlertButtonClick() {
+        String vacationTitle = getIntent().getStringExtra("VACATION_TITLE");
         String startDate = getIntent().getStringExtra("VACATION_START_DATE");
         String endDate = getIntent().getStringExtra("VACATION_END_DATE");
 
         // Schedule notifications
-        scheduleNotification(startDate, "Vacation Start Reminder", 0);
-        scheduleNotification(endDate, "Vacation End Reminder", 1);
+        scheduleNotification(startDate, "Vacation Start Reminder for: " + vacationTitle, 0);
+        scheduleNotification(endDate, "Vacation End Reminder for: " + vacationTitle, 1);
 
         Toast.makeText(this, "Notifications set for the start and end dates!", Toast.LENGTH_SHORT).show();
         finish();
