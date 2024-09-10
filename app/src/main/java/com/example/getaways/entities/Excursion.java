@@ -3,6 +3,7 @@ package com.example.getaways.entities;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+// ***EVALUATION, TASK B4:  Include the following details for each excursion: The excursion title, The excursion date
 @Entity(tableName = "excursions")
 public class Excursion {
     @PrimaryKey(autoGenerate = true)

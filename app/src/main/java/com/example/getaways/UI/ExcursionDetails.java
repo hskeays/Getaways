@@ -54,6 +54,7 @@ public class ExcursionDetails extends AppCompatActivity {
         String vacationStartDate = getIntent().getStringExtra("VACATION_START_DATE");
         String vacationEndDate = getIntent().getStringExtra("VACATION_END_DATE");
 
+        // ***EVALUATION, TASK B4:  Include the following details for each excursion: The excursion title, The excursion date
         // Initialize views and set on click listeners
         etvExcursionTitle = findViewById(R.id.etv_enter_excursion_title);
 
