@@ -30,6 +30,10 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 
+// ***EVALUATION, TASK B3-a/b:
+// a: Display a detailed view of the vacation, including all vacation details. This view can also be used to add and update the vacation information.
+// b: Enter, edit, and delete vacation information
+// Activity for displaying, saving/updating, sharing, alerting a vacation
 public class VacationDetails extends AppCompatActivity {
     Repository repository;
     ExcursionAdapter excursionAdapter;
@@ -62,6 +66,8 @@ public class VacationDetails extends AppCompatActivity {
         // ***EVALUATION, TASK B2: Include the following details for each vacation: title, hotel or other place where you will be staying, start date, end date
         // Create views for users to enter vacation details
 
+        // ***EVALUATION, TASK B3-b: Enter, edit, and delete vacation information
+
         // Initialize views/buttons, set on click listeners
         etvVacationTitle = findViewById(R.id.etv_vacation_title);
         etvHotelName = findViewById(R.id.etv_hotel_name);
@@ -92,6 +98,7 @@ public class VacationDetails extends AppCompatActivity {
             btnPickEndDate.setText(endDate);
         }
 
+        // ***EVALUATION, TASK B3-g:  Display a list of excursions associated with each vacation.
         // Show associated excursions in recycler view
         RecyclerView recyclerView = findViewById(R.id.rv_excursion_list_items);
         excursionAdapter = new ExcursionAdapter(this);
@@ -149,6 +156,8 @@ public class VacationDetails extends AppCompatActivity {
         }, year, month, day).show();
     }
 
+    // ***EVALUATION, TASK B3-a:  Display a detailed view of the vacation, including all vacation details. This view can also be used to add and update the vacation information.
+    // Method to handle saving, or updating if vacation already exists
     private void handleSaveButtonClick() {
         int vacationID = getIntent().getIntExtra("ID", 0);
         String vacationTitle = etvVacationTitle.getText().toString();
@@ -219,7 +228,8 @@ public class VacationDetails extends AppCompatActivity {
         });
     }
 
-
+    // ***EVALUATION, TASK B3-e:  Include an alert that the user can set which will trigger on the start and end date, displaying the vacation title and whether it is starting or ending.
+    // Handle alert button click to create intent with vacation details
     private void handleAlertButtonClick() {
         int vacationID = getIntent().getIntExtra("ID", 0);
         String vacationTitle = etvVacationTitle.getText().toString();
@@ -242,6 +252,8 @@ public class VacationDetails extends AppCompatActivity {
         }
     }
 
+    // ***EVALUATION, TASK B3-f:  Include sharing features so the user can share all the vacation details via a sharing feature (either e-mail, clipboard or SMS) that automatically populates with the vacation details.
+    // Method to handle share button click, create intent with all current vacation details
     private void handleShareButtonClick() {
         int vacationID = getIntent().getIntExtra("ID", 0);
         String vacationTitle = etvVacationTitle.getText().toString();
@@ -264,6 +276,8 @@ public class VacationDetails extends AppCompatActivity {
         }
     }
 
+    // ***EVALUATION, TASK B3-h:  Add, update, and delete as many excursions as needed.
+    // Handle floating action button click to create intent with vacation details to go to Excursion Details activity
     private void handleFabButtonClick() {
         int vacationID = getIntent().getIntExtra("ID", 0);
         String vacationTitle = etvVacationTitle.getText().toString();
@@ -284,10 +298,13 @@ public class VacationDetails extends AppCompatActivity {
         }
     }
 
+    // ***EVALUATION, TASK B3-c:  Include validation that the input dates are formatted correctly.
+    // Create method to validate all vacation input is valid
     private boolean isValidVacation(String vacationTitle, String hotelName, String startDate, String endDate) {
         return !startDate.equals("Pick a date") && !endDate.equals("Pick a date") && !vacationTitle.isEmpty() && !hotelName.isEmpty() && isDateOnOrAfterCurrentDate(startDate) && isDateBefore(startDate, endDate);
     }
 
+    // ***EVALUATION, TASK B3-c:  Include validation that the input dates are formatted correctly.
     // Normalizes String dates for input validation
     private String normalizeDate(String date) {
         String[] parts = date.split("/");
@@ -298,6 +315,7 @@ public class VacationDetails extends AppCompatActivity {
         return month + "/" + day + "/" + year;
     }
 
+    // ***EVALUATION, TASK B3-d:  Include validation that the vacation end date is after the start date.
     // Checks if a given date is before another given date
     private boolean isDateBefore(String date1, String date2) {
         // Check for empty input to avoid exception
@@ -323,6 +341,7 @@ public class VacationDetails extends AppCompatActivity {
         }
     }
 
+    // ***EVALUATION, TASK B3-d:  Include validation that the input dates are formatted correctly.
     // Checks if a given date is on or after the current date
     private boolean isDateOnOrAfterCurrentDate(String date) {
         // Check for empty input to avoid exception

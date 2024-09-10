@@ -25,6 +25,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+// ***EVALUATION, TASK B3-h:  Add, update, and delete as many excursions as needed.
+// Class that handles adding, updating, deleting excursions
 public class ExcursionDetails extends AppCompatActivity {
     private Repository repository;
     private EditText etvExcursionTitle;

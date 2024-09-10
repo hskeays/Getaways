@@ -95,6 +95,8 @@ public class VacationShare extends AppCompatActivity {
         return vacationFormatted + hotelFormatted + datesFormatted + excursionsFormatted + "\n" + userMessage;
     }
 
+    // ***EVALUATION, TASK B3-f:  Include sharing features so the user can share all the vacation details via a sharing feature (either e-mail, clipboard or SMS) that automatically populates with the vacation details.
+    // Method to handle share button click, creates implicit email intent with pre-populated information from current activity
     private void handleShareEmailButtonClick() {
         List<String> excursionTitlesAndDates = new ArrayList<>();
         if (excursionAdapter.getExcursions() != null) {

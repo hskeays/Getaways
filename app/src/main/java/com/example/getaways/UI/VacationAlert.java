@@ -127,6 +127,8 @@ public class VacationAlert extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+    // ***EVALUATION, TASK B3-e:  Include an alert that the user can set which will trigger on the start and end date, displaying the vacation title and whether it is starting or ending.
+    // Method to handle setting/scheduling start date/end date alerts with the vacation title in the notification
     private void handleSetAlertButtonClick() {
         String vacationTitle = getIntent().getStringExtra("VACATION_TITLE");
         String startDate = getIntent().getStringExtra("VACATION_START_DATE");
@@ -140,6 +142,8 @@ public class VacationAlert extends AppCompatActivity {
         finish();
     }
 
+    // ***EVALUATION, TASK B3-e:  Include an alert that the user can set which will trigger on the start and end date, displaying the vacation title and whether it is starting or ending.
+    // Method to schedule notification
     private void scheduleNotification(String dateString, String message, int requestCode) {
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
         try {
