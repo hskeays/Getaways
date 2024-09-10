@@ -33,6 +33,8 @@ public class VacationList extends AppCompatActivity {
             return insets;
         });
 
+        // ***EVALUATION, TASK B1-a: Allow the user to add as many vacations as desired.
+        // Create intent to go to Vacation Details activity for creating new vacation
         FloatingActionButton addFloatingActionButton = findViewById(R.id.fab_add_vacation_list);
         addFloatingActionButton.setOnClickListener(view -> {
             Intent vacationDetailsIntent = new Intent(VacationList.this, VacationDetails.class);
@@ -42,6 +44,9 @@ public class VacationList extends AppCompatActivity {
         // Initialize repository and adapter
         repository = new Repository(getApplication());
         vacationAdapter = new VacationAdapter(this);
+
+        // ***EVALUATION, TASK B1-a: Allow the user to add as many vacations as desired.
+        // Create recycler view with all saved vacations queried from database
 
         // Set up RecyclerView
         RecyclerView recyclerView = findViewById(R.id.rv_vacation_list_items);

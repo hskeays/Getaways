@@ -190,6 +190,8 @@ public class VacationDetails extends AppCompatActivity {
                 repository.getVacationByID(vacationID).observe(this, vacation -> {
                     if (vacation != null) {
                         repository.getAssociatedExcursions(vacationID).observe(this, excursions -> {
+                            // ***EVALUATION, TASK B1-b: Implement validation so that a vacation cannot be deleted if excursions are associated with it.
+                            // Prevent deletion of vacations if the associated excursions list is not empty
                             if (excursions == null || excursions.isEmpty()) {
                                 new AlertDialog.Builder(this).setTitle("Delete Vacation").setMessage("Are you sure you want to delete this vacation?").setPositiveButton("Yes", (dialog, which) -> {
                                     repository.delete(vacation);
