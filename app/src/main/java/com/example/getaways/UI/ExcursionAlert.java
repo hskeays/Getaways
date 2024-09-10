@@ -102,6 +102,8 @@ public class ExcursionAlert extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+    // ***EVALUATION, TASK B5-d:  Include an alert that the user can set that will trigger on the excursion date, stating the excursion title.
+    // Method for handling share button click to schedule alert notification for excursion
     private void handleSetAlertsButtonClick() {
         String date = getIntent().getStringExtra("EXCURSION_DATE");
 
@@ -112,6 +114,8 @@ public class ExcursionAlert extends AppCompatActivity {
         finish();
     }
 
+    // ***EVALUATION, TASK B5-d:  Include an alert that the user can set that will trigger on the excursion date, stating the excursion title.
+    // Method for scheduling notification
     private void scheduleNotification(String dateString) {
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
         try {
@@ -137,6 +141,8 @@ public class ExcursionAlert extends AppCompatActivity {
         }
     }
 
+    // ***EVALUATION, TASK B5-d:  Include an alert that the user can set that will trigger on the excursion date, stating the excursion title.
+    // Method for setting notification for start date with excursion title
     private void setNotificationAlarm(long triggerTime) {
         String excursionTitle = getIntent().getStringExtra("EXCURSION_TITLE");
         // Create an intent to trigger the notification

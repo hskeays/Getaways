@@ -55,6 +55,7 @@ public class ExcursionDetails extends AppCompatActivity {
         String vacationEndDate = getIntent().getStringExtra("VACATION_END_DATE");
 
         // ***EVALUATION, TASK B4:  Include the following details for each excursion: The excursion title, The excursion date
+        // ***EVALUATION, TASK B5-a:  Display a detailed view of the excursion, including the title, and date
         // Initialize views and set on click listeners
         etvExcursionTitle = findViewById(R.id.etv_enter_excursion_title);
 
@@ -113,6 +114,7 @@ public class ExcursionDetails extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+    // ***EVALUATION, TASK B5-b:  Enter, edit, and delete excursion information.
     private void handleSaveButtonClick(int excursionID, int vacationID) {
         String excursionTitle = etvExcursionTitle.getText().toString();
         String excursionDate = btnPickExcursionDate.getText().toString();
@@ -140,6 +142,7 @@ public class ExcursionDetails extends AppCompatActivity {
         }
     }
 
+    // ***EVALUATION, TASK B5-b:  Enter, edit, and delete excursion information.
     private void handleDeleteButtonClick(int excursionID) {
         // Check if the excursion exists
         repository.excursionExists(excursionID).observe(this, exists -> {
@@ -164,6 +167,8 @@ public class ExcursionDetails extends AppCompatActivity {
         });
     }
 
+    // ***EVALUATION, TASK B5-d:  Include an alert that the user can set that will trigger on the excursion date, stating the excursion title.
+    // Method to handle creating intent with excursion details to navigate to ExcursionAlert activity
     private void handleAlertButtonClick() {
         int excursionID = getIntent().getIntExtra("ID", 0);
         String excursionTitle = etvExcursionTitle.getText().toString();
@@ -180,6 +185,7 @@ public class ExcursionDetails extends AppCompatActivity {
         }
     }
 
+    // ***EVALUATION, TASK B5-c:  Include validation that the input dates are formatted correctly.
     private String normalizeDate(String date) {
         String[] parts = date.split("/");
 
@@ -190,6 +196,8 @@ public class ExcursionDetails extends AppCompatActivity {
         return month + "/" + day + "/" + year;
     }
 
+    // ***EVALUATION, TASK B5-f:  Include validation that the excursion date is during the associated vacation.
+    // Method to validate excursion date is between vacation start and end date
     private boolean isDateBetween(String targetDate, String startDate, String endDate) {
         // Check for empty input to avoid exception
         if (startDate.equals("Pick a date") || endDate.equals("Pick a date") || targetDate.equals("Pick a date")) {
