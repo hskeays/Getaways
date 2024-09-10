@@ -59,6 +59,9 @@ public class VacationDetails extends AppCompatActivity {
         String startDate = getIntent().getStringExtra("START_DATE");
         String endDate = getIntent().getStringExtra("END_DATE");
 
+        // ***EVALUATION, TASK B2: Include the following details for each vacation: title, hotel or other place where you will be staying, start date, end date
+        // Create views for users to enter vacation details
+
         // Initialize views/buttons, set on click listeners
         etvVacationTitle = findViewById(R.id.etv_vacation_title);
         etvHotelName = findViewById(R.id.etv_hotel_name);
@@ -66,6 +69,7 @@ public class VacationDetails extends AppCompatActivity {
         btnPickStartDate.setOnClickListener(view -> showDatePickerDialog(btnPickStartDate));
         btnPickEndDate = findViewById(R.id.btn_end_date_picker);
         btnPickEndDate.setOnClickListener(view -> showDatePickerDialog(btnPickEndDate));
+
         Button btnSave = findViewById(R.id.btn_save_vacation);
         btnSave.setOnClickListener(view -> handleSaveButtonClick());
         Button btnDelete = findViewById(R.id.btn_delete_vacation);
