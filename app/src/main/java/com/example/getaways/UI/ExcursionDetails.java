@@ -118,28 +118,31 @@ public class ExcursionDetails extends AppCompatActivity {
     private void handleSaveButtonClick(int excursionID, int vacationID) {
         String excursionTitle = etvExcursionTitle.getText().toString();
         String excursionDate = btnPickExcursionDate.getText().toString();
-        String vacationStartDate = getIntent().getStringExtra("VACATION_START_DATE");
-        String vacationEndDate = getIntent().getStringExtra("VACATION_END_DATE");
 
-        if (isValidExcursion(excursionTitle, excursionDate, vacationStartDate, vacationEndDate)) {
-            Excursion excursion;
-            // If excursion does not exist insert, else update
-            if (excursionID == 0) {
-                excursion = new Excursion(excursionDate, excursionTitle, vacationID);
-                repository.insert(excursion);
-                Toast.makeText(this, "Excursion successfully added.", Toast.LENGTH_SHORT).show();
+        repository.getVacationByID(vacationID).observe(this, vacation -> {
+            String vacationStartDate = vacation.getStartDate();
+            String vacationEndDate = vacation.getEndDate();
+
+            if (isValidExcursion(excursionTitle, excursionDate, vacationStartDate, vacationEndDate)) {
+                Excursion excursion;
+                // If excursion does not exist insert, else update
+                if (excursionID == 0) {
+                    excursion = new Excursion(excursionDate, excursionTitle, vacationID);
+                    repository.insert(excursion);
+                    Toast.makeText(this, "Excursion successfully added.", Toast.LENGTH_SHORT).show();
+                } else {
+                    excursion = new Excursion(excursionDate, excursionTitle, vacationID);
+                    excursion.setId(excursionID);
+                    repository.update(excursion);
+                    Toast.makeText(this, "Excursion successfully updated.", Toast.LENGTH_SHORT).show();
+                }
+                finish();
+            } else if (excursionTitle.isEmpty()) {
+                Toast.makeText(this, "Excursion title field cannot be empty.", Toast.LENGTH_SHORT).show();
             } else {
-                excursion = new Excursion(excursionDate, excursionTitle, vacationID);
-                excursion.setId(excursionID);
-                repository.update(excursion);
-                Toast.makeText(this, "Excursion successfully updated.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Excursion date must be between " + vacationStartDate + " and " + vacationEndDate, Toast.LENGTH_SHORT).show();
             }
-            finish();
-        } else if (excursionTitle.isEmpty()) {
-            Toast.makeText(this, "Excursion title field cannot be empty.", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Excursion date must be between " + vacationStartDate + " and " + vacationEndDate, Toast.LENGTH_SHORT).show();
-        }
+        });
     }
 
     // ***EVALUATION, TASK B5-b:  Enter, edit, and delete excursion information.
