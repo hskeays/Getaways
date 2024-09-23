@@ -14,7 +14,7 @@
             app:showAsAction="ifRoom" />
     <item
             android:id="@+id/vacation_list"
-            android:title="@string/vacation_list" />
+            android:title="@string/vacations" />
     <item
             android:id="@+id/vacation_details"
             android:title="@string/vacation_details" />
