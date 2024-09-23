@@ -46,4 +46,5 @@
     <string name="placeholder">PLACEHOLDER</string>
     <string name="content_description_airplane_icon">airplane icon</string>
     <string name="vacations">Vacations</string>
+    <string name="search">Search</string>
 </resources>

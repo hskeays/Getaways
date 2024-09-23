@@ -1,10 +1,11 @@
 package com.example.getaways.entities;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 // ***EVALUATION, TASK B4:  Include the following details for each excursion: The excursion title, The excursion date
-@Entity(tableName = "excursions")
+@Entity(tableName = "excursions", foreignKeys = @ForeignKey(entity = Vacation.class, parentColumns = "id", childColumns = "vacationID", onDelete = ForeignKey.CASCADE))
 public class Excursion {
     @PrimaryKey(autoGenerate = true)
     private int id;

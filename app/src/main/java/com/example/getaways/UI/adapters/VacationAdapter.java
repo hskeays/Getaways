@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.getaways.R;
 import com.example.getaways.UI.VacationDetails;
+import com.example.getaways.entities.Excursion;
 import com.example.getaways.entities.Vacation;
+import com.example.getaways.entities.VacationWithExcursions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +23,8 @@ public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.Vacati
 
     private final Context context;
     private final LayoutInflater inflater;
-    private List<Vacation> vacations = new ArrayList<>();
+    private List<VacationWithExcursions> vacations = new ArrayList<>();
+    private List<VacationWithExcursions> filteredVacations = new ArrayList<>();
 
     public VacationAdapter(Context context) {
         this.context = context;
@@ -37,17 +40,46 @@ public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.Vacati
 
     @Override
     public void onBindViewHolder(@NonNull VacationViewHolder holder, int position) {
-        final Vacation current = vacations.get(position);
-        holder.vacationItemView.setText(current.getVacationTitle());
+        final VacationWithExcursions current = filteredVacations.get(position);
+        holder.vacationItemView.setText(current.getVacation().getVacationTitle());
     }
 
     @Override
     public int getItemCount() {
-        return vacations.size();
+        return filteredVacations.size();
     }
 
-    public void setVacations(List<Vacation> vacations) {
+    public void setVacations(List<VacationWithExcursions> vacations) {
         this.vacations = vacations;
+        this.filteredVacations = new ArrayList<>(vacations);
+        notifyDataSetChanged();
+    }
+
+    public void filter(String query) {
+        if (query.isEmpty()) {
+            // Restore the original full list
+            filteredVacations = new ArrayList<>(vacations);
+        } else {
+            List<VacationWithExcursions> filteredList = new ArrayList<>();
+            for (VacationWithExcursions vacationWithExcursions : vacations) {
+                Vacation vacation = vacationWithExcursions.getVacation();
+                // Check if vacation title matches the query
+                if (vacation.getVacationTitle().toLowerCase().contains(query.toLowerCase())) {
+                    filteredList.add(vacationWithExcursions);
+                } else {
+                    // Check if any excursion title matches the query
+                    for (Excursion excursion : vacationWithExcursions.getExcursions()) {
+                        if (excursion.getExcursionTitle().toLowerCase().contains(query.toLowerCase())) {
+                            filteredList.add(vacationWithExcursions);
+                            break; // Break out once we find a matching excursion
+                        }
+                    }
+                }
+            }
+            filteredVacations = filteredList; // Update the filtered list
+        }
+
+        // Notify the adapter that the data set has changed
         notifyDataSetChanged();
     }
 
@@ -60,13 +92,13 @@ public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.Vacati
             vacationItemView.setOnClickListener(view -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
-                    final Vacation current = vacations.get(position);
+                    final VacationWithExcursions current = filteredVacations.get(position);
                     Intent intent = new Intent(context, VacationDetails.class);
-                    intent.putExtra("ID", current.getId());
-                    intent.putExtra("VACATION_TITLE", current.getVacationTitle());
-                    intent.putExtra("HOTEL_NAME", current.getHotelName());
-                    intent.putExtra("START_DATE", current.getStartDate());
-                    intent.putExtra("END_DATE", current.getEndDate());
+                    intent.putExtra("ID", current.getVacation().getId());
+                    intent.putExtra("VACATION_TITLE", current.getVacation().getVacationTitle());
+                    intent.putExtra("HOTEL_NAME", current.getVacation().getHotelName());
+                    intent.putExtra("START_DATE", current.getVacation().getStartDate());
+                    intent.putExtra("END_DATE", current.getVacation().getEndDate());
                     context.startActivity(intent);
                 }
             });

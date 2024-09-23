@@ -11,7 +11,7 @@ import com.example.getaways.dao.VacationDAO;
 import com.example.getaways.entities.Excursion;
 import com.example.getaways.entities.Vacation;
 
-@Database(entities = {Vacation.class, Excursion.class}, version = 1, exportSchema = false)
+@Database(entities = {Vacation.class, Excursion.class}, version = 2, exportSchema = false)
 public abstract class DatabaseBuilder extends RoomDatabase {
     private static volatile DatabaseBuilder INSTANCE;
 

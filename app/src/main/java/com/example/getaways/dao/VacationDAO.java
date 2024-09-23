@@ -6,9 +6,11 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 import com.example.getaways.entities.Vacation;
+import com.example.getaways.entities.VacationWithExcursions;
 
 import java.util.List;
 
@@ -34,4 +36,8 @@ public interface VacationDAO {
 
     @Query(("SELECT id FROM vacations ORDER BY id DESC LIMIT 1"))
     LiveData<Integer> getLastInsertedVacationID();
+
+    @Transaction
+    @Query("SELECT * FROM vacations")
+    LiveData<List<VacationWithExcursions>> getAllVacationsWithExcursions();
 }

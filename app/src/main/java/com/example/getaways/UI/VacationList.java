@@ -7,6 +7,7 @@ import android.view.MenuItem;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -54,20 +55,41 @@ public class VacationList extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Observe LiveData and update adapter
-        repository.getAllVacations().observe(this, vacationList -> vacationAdapter.setVacations(vacationList));
+        repository.getAllVacationsWithExcursions().observe(this, vacationList -> vacationAdapter.setVacations(vacationList));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        repository.getAllVacations().observe(this, vacationList -> vacationAdapter.setVacations(vacationList));
+        repository.getAllVacationsWithExcursions().observe(this, vacationList -> vacationAdapter.setVacations(vacationList));
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.appbar_menu, menu);
+
+        // Get the SearchView and set up the search configuration
+        MenuItem searchItem = menu.findItem(R.id.ic_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        // Configure the search info and add any event listeners
+        searchView.setQueryHint("Search...");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                vacationAdapter.filter(query); // Filter when the user submits the query
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                vacationAdapter.filter(newText); // Filter as the user types
+                return true;
+            }
+        });
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
