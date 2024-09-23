@@ -43,7 +43,7 @@
         <activity
                 android:name=".UI.VacationList"
                 android:exported="false"
-                android:label="Vacation List" />
+                android:label="Vacations" />
         <activity
                 android:name=".UI.MainActivity"
                 android:exported="true">
