@@ -73,7 +73,9 @@ public class VacationList extends AppCompatActivity {
         SearchView searchView = (SearchView) searchItem.getActionView();
 
         // Configure the search info and add any event listeners
-        searchView.setQueryHint("Search...");
+        if (searchView != null) {
+            searchView.setQueryHint("Search...");
+        }
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
