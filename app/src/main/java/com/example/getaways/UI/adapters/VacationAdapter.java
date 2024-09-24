@@ -42,6 +42,8 @@ public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.Vacati
     public void onBindViewHolder(@NonNull VacationViewHolder holder, int position) {
         final VacationWithExcursions current = filteredVacations.get(position);
         holder.vacationItemView.setText(current.getVacation().getVacationTitle());
+        String date = current.getVacation().getStartDate() + "-" + current.getVacation().getEndDate();
+        holder.vacationItemViewDate.setText(date);
     }
 
     @Override
@@ -85,10 +87,12 @@ public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.Vacati
 
     public class VacationViewHolder extends RecyclerView.ViewHolder {
         private final TextView vacationItemView;
+        private final TextView vacationItemViewDate;
 
         public VacationViewHolder(@NonNull View itemView) {
             super(itemView);
             vacationItemView = itemView.findViewById(R.id.tv_vacation_list_item);
+            vacationItemViewDate = itemView.findViewById(R.id.tv_vacation_list_item_date);
             vacationItemView.setOnClickListener(view -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
