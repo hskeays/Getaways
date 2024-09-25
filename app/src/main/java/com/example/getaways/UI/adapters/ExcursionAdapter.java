@@ -66,7 +66,9 @@ public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.Excu
             super(itemView);
             excursionTextView = itemView.findViewById(R.id.tv_excursion_list_item);
             excursionTextViewDate = itemView.findViewById(R.id.tv_excursion_list_item_date);
-            excursionTextView.setOnClickListener(view -> {
+
+            View excursionTextViewCard = itemView.findViewById(R.id.tv_excursion_list_item_card);
+            excursionTextViewCard.setOnClickListener(view -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     final Excursion current = excursions.get(position);

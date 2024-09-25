@@ -2,7 +2,6 @@ package com.example.getaways.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,7 +9,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -25,7 +23,7 @@ import com.example.getaways.entities.Excursion;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VacationShare extends AppCompatActivity {
+public class VacationShare extends MainActivity {
     ExcursionAdapter excursionAdapter;
     private EditText etmlUserMessage;
 
@@ -122,18 +120,12 @@ public class VacationShare extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.appbar_menu, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         if (id == R.id.ic_home) {
             startActivity(new Intent(this, MainActivity.class));
-        } else if (id == R.id.ic_back) {
+        } else if (id == android.R.id.home) {
             getOnBackPressedDispatcher().onBackPressed();
         } else if (id == R.id.vacation_list) {
             startActivity(new Intent(this, VacationList.class));

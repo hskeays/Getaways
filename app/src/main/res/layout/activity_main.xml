@@ -11,23 +11,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/welcome_to_getaways"
-            android:textSize="24sp"
+            android:textSize="40sp"
+            android:fontFamily="@font/devinagarden"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="32dp"
             android:id="@+id/tv_welcome_message" />
-
-    <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:contentDescription="@string/content_description_airplane_icon"
-            app:srcCompat="@drawable/baseline_flight_24"
-            android:id="@+id/iv_plane"
-            app:layout_constraintTop_toBottomOf="@+id/tv_welcome_message"
-            app:layout_constraintStart_toStartOf="@+id/tv_welcome_message"
-            app:layout_constraintEnd_toEndOf="@+id/tv_welcome_message"
-            android:layout_marginTop="32dp" />
 
     <Button
             android:text="@string/enter"

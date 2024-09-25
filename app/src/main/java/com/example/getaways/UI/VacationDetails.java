@@ -3,7 +3,6 @@ package com.example.getaways.UI;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,7 +10,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -34,7 +32,7 @@ import java.util.Date;
 // a: Display a detailed view of the vacation, including all vacation details. This view can also be used to add and update the vacation information.
 // b: Enter, edit, and delete vacation information
 // Activity for displaying, saving/updating, sharing, alerting a vacation
-public class VacationDetails extends AppCompatActivity {
+public class VacationDetails extends MainActivity {
     Repository repository;
     ExcursionAdapter excursionAdapter;
     private EditText etvVacationTitle;
@@ -123,18 +121,12 @@ public class VacationDetails extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.appbar_menu, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         if (id == R.id.ic_home) {
             startActivity(new Intent(this, MainActivity.class));
-        } else if (id == R.id.ic_back) {
+        } else if (id == android.R.id.home) {
             getOnBackPressedDispatcher().onBackPressed();
         } else if (id == R.id.vacation_list) {
             startActivity(new Intent(this, VacationList.class));
@@ -210,9 +202,7 @@ public class VacationDetails extends AppCompatActivity {
                                     repository.delete(vacation);
                                     Toast.makeText(this, "Successfully deleted vacation.", Toast.LENGTH_SHORT).show();
                                     finish();
-                                }).setNegativeButton("No", (dialog, which) -> {
-                                    dialog.dismiss();
-                                }).show();
+                                }).setNegativeButton("No", (dialog, which) -> dialog.dismiss()).show();
                             } else {
                                 Toast.makeText(this, "Cannot delete vacation with associated excursions.", Toast.LENGTH_SHORT).show();
                             }

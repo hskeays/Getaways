@@ -93,7 +93,9 @@ public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.Vacati
             super(itemView);
             vacationItemView = itemView.findViewById(R.id.tv_vacation_list_item);
             vacationItemViewDate = itemView.findViewById(R.id.tv_vacation_list_item_date);
-            vacationItemView.setOnClickListener(view -> {
+
+            View vacationItemViewCard = itemView.findViewById(R.id.tv_vacation_list_item_card);
+            vacationItemViewCard.setOnClickListener(view -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     final VacationWithExcursions current = filteredVacations.get(position);

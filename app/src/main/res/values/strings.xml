@@ -1,7 +1,7 @@
 <resources>
     <!-- App Title -->
     <string name="app_name">Getaways</string>
-    <string name="welcome_to_getaways">Welcome to Getaways!</string>
+    <string name="welcome_to_getaways">Welcome to Getaways</string>
 
     <!-- Navigation -->
     <string name="Home">Home</string>

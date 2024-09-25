@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -27,7 +26,7 @@ import java.util.Date;
 
 // ***EVALUATION, TASK B3-h:  Add, update, and delete as many excursions as needed.
 // Class that handles adding, updating, deleting excursions
-public class ExcursionDetails extends AppCompatActivity {
+public class ExcursionDetails extends MainActivity {
     private Repository repository;
     private EditText etvExcursionTitle;
     private Button btnPickExcursionDate;
@@ -81,6 +80,7 @@ public class ExcursionDetails extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.appbar_menu, menu); // Inflate the app bar menu
+        menu.findItem(R.id.ic_search).setVisible(false);
         return true;
     }
 
@@ -90,7 +90,7 @@ public class ExcursionDetails extends AppCompatActivity {
 
         if (id == R.id.ic_home) {
             startActivity(new Intent(this, MainActivity.class));
-        } else if (id == R.id.ic_back) {
+        } else if (id == android.R.id.home) {
             getOnBackPressedDispatcher().onBackPressed();
         } else if (id == R.id.vacation_list) {
             startActivity(new Intent(this, VacationList.class));

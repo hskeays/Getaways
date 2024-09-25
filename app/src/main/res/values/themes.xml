@@ -1,9 +1,8 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="Base.Theme.Getaways" parent="Theme.Material3.DayNight">
+    <style name="Base.Theme.Getaways" parent="Theme.Material3.DynamicColors.Light">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:windowBackground">@color/light_grey</item>
+        <item name="android:windowActionBar">@color/white</item>
     </style>
-
-    <style name="Theme.Getaways" parent="Base.Theme.Getaways" />
 </resources>

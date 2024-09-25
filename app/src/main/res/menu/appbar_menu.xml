@@ -8,11 +8,6 @@
             android:title="@string/Home"
             app:showAsAction="ifRoom" />
     <item
-            android:id="@+id/ic_back"
-            android:icon="@drawable/baseline_arrow_back_24"
-            android:title="@string/Back"
-            app:showAsAction="ifRoom" />
-    <item
             android:id="@+id/ic_search"
             android:icon="@drawable/baseline_search_24"
             android:title="@string/search"

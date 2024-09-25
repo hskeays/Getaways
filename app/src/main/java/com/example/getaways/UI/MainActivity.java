@@ -1,6 +1,7 @@
 package com.example.getaways.UI;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -8,6 +9,7 @@ import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -27,6 +29,11 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, R.color.white)));
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         Button submitButton = findViewById(R.id.btn_submit);
         submitButton.setOnClickListener(view -> {
             Intent vacationListIntent = new Intent(MainActivity.this, VacationList.class);
@@ -37,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.appbar_menu, menu);
+        menu.findItem(R.id.ic_search).setVisible(false);
         return true;
     }
 

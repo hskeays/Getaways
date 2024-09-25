@@ -6,7 +6,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -19,7 +18,7 @@ import com.example.getaways.UI.adapters.VacationAdapter;
 import com.example.getaways.database.Repository;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class VacationList extends AppCompatActivity {
+public class VacationList extends MainActivity {
     Repository repository;
     VacationAdapter vacationAdapter;
 
@@ -76,22 +75,23 @@ public class VacationList extends AppCompatActivity {
         if (searchView != null) {
             searchView.setQueryHint("Search...");
         }
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                vacationAdapter.filter(query); // Filter when the user submits the query
-                return true;
-            }
+        if (searchView != null) {
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    vacationAdapter.filter(query); // Filter when the user submits the query
+                    return true;
+                }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                vacationAdapter.filter(newText); // Filter as the user types
-                return true;
-            }
-        });
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    vacationAdapter.filter(newText); // Filter as the user types
+                    return true;
+                }
+            });
+        }
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -99,7 +99,7 @@ public class VacationList extends AppCompatActivity {
 
         if (id == R.id.ic_home) {
             startActivity(new Intent(this, MainActivity.class));
-        } else if (id == R.id.ic_back) {
+        } else if (id == android.R.id.home) {
             getOnBackPressedDispatcher().onBackPressed();
         } else if (id == R.id.vacation_list) {
             startActivity(new Intent(this, VacationList.class));
