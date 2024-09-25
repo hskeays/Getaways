@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1065831127540",
+    "project_id": "getaways-a845d",
+    "storage_bucket": "getaways-a845d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1065831127540:android:09ffae4986a590031f01a1",
+        "android_client_info": {
+          "package_name": "com.example.getaways"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5AuYocx3kGQbuGch8pL3pXzlBOyuDucY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
