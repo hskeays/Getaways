@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -18,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.getaways.R;
 import com.example.getaways.database.Repository;
 import com.example.getaways.entities.Excursion;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,7 +28,7 @@ import java.util.Date;
 
 // ***EVALUATION, TASK B3-h:  Add, update, and delete as many excursions as needed.
 // Class that handles adding, updating, deleting excursions
-public class ExcursionDetails extends MainActivity {
+public class ExcursionDetails extends AppCompatActivity {
     private Repository repository;
     private EditText etvExcursionTitle;
     private Button btnPickExcursionDate;
@@ -41,6 +43,10 @@ public class ExcursionDetails extends MainActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         // Initialize repository
         repository = new Repository(getApplication());
@@ -89,9 +95,11 @@ public class ExcursionDetails extends MainActivity {
         int id = item.getItemId();
 
         if (id == R.id.ic_home) {
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, VacationList.class));
         } else if (id == android.R.id.home) {
             getOnBackPressedDispatcher().onBackPressed();
+        } else if (id == R.id.ic_logout) {
+            showLogoutDialog();
         } else if (id == R.id.vacation_list) {
             startActivity(new Intent(this, VacationList.class));
         } else if (id == R.id.vacation_details) {
@@ -112,6 +120,19 @@ public class ExcursionDetails extends MainActivity {
         }, year, month, day);
 
         datePickerDialog.show();
+    }
+
+    private void showLogoutDialog() {
+        new android.app.AlertDialog.Builder(this).setTitle("Log out").setMessage("Are you sure you want to log out?").setPositiveButton("Yes", (dialog, which) -> {
+            // Log out the user and navigate to the login screen
+            FirebaseAuth.getInstance().signOut();
+            Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();  // End the current activity
+        }).setNegativeButton("No", (dialog, which) -> {
+            // Dismiss the dialog if the user clicks "No"
+            dialog.dismiss();
+        }).create().show();
     }
 
     // ***EVALUATION, TASK B5-b:  Enter, edit, and delete excursion information.

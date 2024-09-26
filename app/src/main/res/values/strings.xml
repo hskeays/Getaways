@@ -47,4 +47,11 @@
     <string name="content_description_airplane_icon">airplane icon</string>
     <string name="vacations">Vacations</string>
     <string name="search">Search</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="logout">Logout</string>
+    <string name="my_vacations">My Vacations</string>
+    <string name="add_new_vacation">Add New Vacation</string>
 </resources>

@@ -1,11 +1,14 @@
 package com.example.getaways.UI;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -17,8 +20,9 @@ import com.example.getaways.R;
 import com.example.getaways.UI.adapters.VacationAdapter;
 import com.example.getaways.database.Repository;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
-public class VacationList extends MainActivity {
+public class VacationList extends AppCompatActivity {
     Repository repository;
     VacationAdapter vacationAdapter;
 
@@ -54,18 +58,19 @@ public class VacationList extends MainActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Observe LiveData and update adapter
-        repository.getAllVacationsWithExcursions().observe(this, vacationList -> vacationAdapter.setVacations(vacationList));
+        repository.getAllVacations().observe(this, vacationList -> vacationAdapter.setVacations(vacationList));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        repository.getAllVacationsWithExcursions().observe(this, vacationList -> vacationAdapter.setVacations(vacationList));
+        repository.getAllVacations().observe(this, vacationList -> vacationAdapter.setVacations(vacationList));
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.appbar_menu, menu);
+        menu.findItem(R.id.ic_home).setVisible(false);
 
         // Get the SearchView and set up the search configuration
         MenuItem searchItem = menu.findItem(R.id.ic_search);
@@ -74,8 +79,6 @@ public class VacationList extends MainActivity {
         // Configure the search info and add any event listeners
         if (searchView != null) {
             searchView.setQueryHint("Search...");
-        }
-        if (searchView != null) {
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
@@ -97,15 +100,28 @@ public class VacationList extends MainActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.ic_home) {
-            startActivity(new Intent(this, MainActivity.class));
-        } else if (id == android.R.id.home) {
+        if (id == android.R.id.home) {
             getOnBackPressedDispatcher().onBackPressed();
+        } else if (id == R.id.ic_logout) {
+            showLogoutDialog();
         } else if (id == R.id.vacation_list) {
             startActivity(new Intent(this, VacationList.class));
         } else if (id == R.id.vacation_details) {
             startActivity(new Intent(this, VacationDetails.class));
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showLogoutDialog() {
+        new AlertDialog.Builder(this).setTitle("Log out").setMessage("Are you sure you want to log out?").setPositiveButton("Yes", (dialog, which) -> {
+            // Log out the user and navigate to the login screen
+            FirebaseAuth.getInstance().signOut();
+            Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();  // End the current activity
+        }).setNegativeButton("No", (dialog, which) -> {
+            // Dismiss the dialog if the user clicks "No"
+            dialog.dismiss();
+        }).create().show();
     }
 }

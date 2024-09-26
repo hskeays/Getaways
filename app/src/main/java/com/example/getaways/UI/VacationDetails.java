@@ -3,6 +3,7 @@ package com.example.getaways.UI;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -21,6 +23,7 @@ import com.example.getaways.UI.adapters.ExcursionAdapter;
 import com.example.getaways.database.Repository;
 import com.example.getaways.entities.Vacation;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,7 +35,7 @@ import java.util.Date;
 // a: Display a detailed view of the vacation, including all vacation details. This view can also be used to add and update the vacation information.
 // b: Enter, edit, and delete vacation information
 // Activity for displaying, saving/updating, sharing, alerting a vacation
-public class VacationDetails extends MainActivity {
+public class VacationDetails extends AppCompatActivity {
     Repository repository;
     ExcursionAdapter excursionAdapter;
     private EditText etvVacationTitle;
@@ -50,6 +53,10 @@ public class VacationDetails extends MainActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         // Initialize repository
         repository = new Repository(getApplication());
@@ -121,13 +128,22 @@ public class VacationDetails extends MainActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.appbar_menu, menu); // Inflate the app bar menu
+        menu.findItem(R.id.ic_search).setVisible(false);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         if (id == R.id.ic_home) {
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, VacationList.class));
         } else if (id == android.R.id.home) {
             getOnBackPressedDispatcher().onBackPressed();
+        } else if (id == R.id.ic_logout) {
+            showLogoutDialog();
         } else if (id == R.id.vacation_list) {
             startActivity(new Intent(this, VacationList.class));
         } else if (id == R.id.vacation_details) {
@@ -146,6 +162,19 @@ public class VacationDetails extends MainActivity {
             String selectedDate = (selectedMonth + 1) + "/" + selectedDay + "/" + selectedYear;
             button.setText(selectedDate);
         }, year, month, day).show();
+    }
+
+    private void showLogoutDialog() {
+        new android.app.AlertDialog.Builder(this).setTitle("Log out").setMessage("Are you sure you want to log out?").setPositiveButton("Yes", (dialog, which) -> {
+            // Log out the user and navigate to the login screen
+            FirebaseAuth.getInstance().signOut();
+            Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();  // End the current activity
+        }).setNegativeButton("No", (dialog, which) -> {
+            // Dismiss the dialog if the user clicks "No"
+            dialog.dismiss();
+        }).create().show();
     }
 
     // ***EVALUATION, TASK B3-a:  Display a detailed view of the vacation, including all vacation details. This view can also be used to add and update the vacation information.

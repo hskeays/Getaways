@@ -14,9 +14,14 @@
             app:actionViewClass="androidx.appcompat.widget.SearchView"
             app:showAsAction="ifRoom|collapseActionView" />
     <item
+            android:id="@+id/ic_logout"
+            android:icon="@drawable/baseline_logout_24"
+            android:title="@string/logout"
+            app:showAsAction="ifRoom" />
+    <item
             android:id="@+id/vacation_list"
-            android:title="@string/vacations" />
+            android:title="@string/my_vacations" />
     <item
             android:id="@+id/vacation_details"
-            android:title="@string/vacation_details" />
+            android:title="@string/add_new_vacation" />
 </menu>
