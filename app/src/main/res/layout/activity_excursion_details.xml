@@ -19,7 +19,7 @@
             android:layout_marginTop="32dp" />
 
     <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="240dp"
             android:layout_height="48dp"
             android:autofillHints=""
             android:inputType="text"
@@ -31,7 +31,8 @@
             app:layout_constraintTop_toTopOf="@+id/tv_excursion_title"
             android:layout_marginStart="32dp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_excursion_title"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="4dp"
+            android:textColorHint="@color/hint_grey" />
 
     <TextView
             android:text="@string/date"
