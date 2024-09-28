@@ -7,6 +7,16 @@
         android:layout_height="match_parent"
         tools:context=".UI.LoginActivity">
 
+    <androidx.appcompat.widget.Toolbar
+            android:id="@+id/custom_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -15,10 +25,9 @@
             android:fontFamily="@font/devinagarden"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="32dp"
             android:id="@+id/tv_welcome_message"
-            app:layout_constraintBottom_toTopOf="@+id/etv_email_field" />
+            app:layout_constraintBottom_toTopOf="@+id/etv_email_field"
+            app:layout_constraintTop_toBottomOf="@+id/custom_toolbar" />
 
     <EditText
             android:id="@+id/etv_email_field"
@@ -53,6 +62,7 @@
     <Button
             android:id="@+id/btn_login"
             android:layout_width="0dp"
+            android:maxWidth="320dp"
             android:layout_height="wrap_content"
             android:text="@string/login"
             app:layout_constraintTop_toBottomOf="@+id/etv_password_field"
@@ -66,6 +76,7 @@
             android:id="@+id/btn_signup"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:maxWidth="320dp"
             android:text="@string/sign_up"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/btn_login"

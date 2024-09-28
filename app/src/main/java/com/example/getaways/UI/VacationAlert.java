@@ -21,6 +21,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -56,7 +57,11 @@ public class VacationAlert extends AppCompatActivity {
             return insets;
         });
 
+        // Configure custom toolbar
+        Toolbar customToolbar = findViewById(R.id.custom_toolbar);
+        setSupportActionBar(customToolbar);
         if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Vacation Alert");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 

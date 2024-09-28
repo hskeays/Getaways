@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -36,6 +37,14 @@ public class VacationList extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Configure custom toolbar
+        Toolbar customToolbar = findViewById(R.id.custom_toolbar);
+        setSupportActionBar(customToolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("My Vacations");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
 
         // ***EVALUATION, TASK B1-a: Allow the user to add as many vacations as desired.
         // Create intent to go to Vacation Details activity for creating new vacation

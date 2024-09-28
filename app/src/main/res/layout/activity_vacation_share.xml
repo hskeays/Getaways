@@ -7,6 +7,16 @@
         android:layout_height="match_parent"
         tools:context=".UI.VacationShare">
 
+    <androidx.appcompat.widget.Toolbar
+            android:id="@+id/custom_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
             android:text="@string/title"
             android:layout_width="110dp"
@@ -14,7 +24,7 @@
             android:id="@+id/tv_vacation_title_share_label"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/custom_toolbar"
             android:layout_marginStart="32dp"
             android:layout_marginTop="32dp" />
 
@@ -112,12 +122,13 @@
             android:textSize="20sp"
             android:id="@+id/tv_enter_message_prompt"
             app:layout_constraintStart_toStartOf="@+id/tv_end_date_share_label"
-            app:layout_constraintTop_toBottomOf="@+id/rv_excursion_list_items_share"
-            android:layout_marginTop="48dp" />
+            app:layout_constraintBottom_toTopOf="@+id/etml_user_message"
+            android:layout_marginBottom="8dp" />
 
     <EditText
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:maxWidth="320dp"
+            android:layout_height="155dp"
             android:autofillHints=""
             android:inputType="textMultiLine"
             android:hint="@string/type_your_message_here"
@@ -125,10 +136,8 @@
             android:gravity="start|top"
             android:ems="10"
             android:id="@+id/etml_user_message"
-            app:layout_constraintTop_toBottomOf="@+id/tv_enter_message_prompt"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="8dp"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             app:layout_constraintBottom_toTopOf="@+id/btn_share_email"
@@ -137,14 +146,18 @@
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_excursion_list_items_share"
             android:layout_width="0dp"
-            android:layout_marginEnd="24dp"
-            android:layout_height="56dp"
+            android:layout_height="0dp"
             android:scrollbars="vertical"
             android:fadeScrollbars="false"
-            app:layout_constraintTop_toTopOf="@+id/tv_excursions_share_label"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_end_date_share"
-            android:layout_marginTop="4dp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/tv_enter_message_prompt"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintTop_toBottomOf="@+id/tv_excursions_share_label"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0.0"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="24dp" />
 
     <Button
             android:text="@string/share"
