@@ -2,6 +2,7 @@ package com.example.getaways.UI;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,6 +12,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -44,6 +46,12 @@ public class VacationList extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("My Vacations");
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
+
+        // Configure overflow icon
+        Drawable overflowIcon = customToolbar.getOverflowIcon();
+        if (overflowIcon != null) {
+            overflowIcon.setTint(ContextCompat.getColor(this, android.R.color.black));
         }
 
         // ***EVALUATION, TASK B1-a: Allow the user to add as many vacations as desired.

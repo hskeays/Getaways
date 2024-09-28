@@ -2,6 +2,7 @@ package com.example.getaways.UI;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +14,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -51,6 +53,12 @@ public class ExcursionDetails extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Excursion Details");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        // Configure overflow icon
+        Drawable overflowIcon = customToolbar.getOverflowIcon();
+        if (overflowIcon != null) {
+            overflowIcon.setTint(ContextCompat.getColor(this, android.R.color.black));
         }
 
         // Initialize repository
