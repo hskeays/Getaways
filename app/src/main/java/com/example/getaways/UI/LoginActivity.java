@@ -44,7 +44,6 @@ public class LoginActivity extends AppCompatActivity {
         setSupportActionBar(customToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Getaways");
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         // Configure overflow icon

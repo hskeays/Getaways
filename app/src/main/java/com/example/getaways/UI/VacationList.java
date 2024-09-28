@@ -46,6 +46,7 @@ public class VacationList extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("My Vacations");
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.baseline_arrow_back_ios_new_24);
         }
 
         // Configure overflow icon
