@@ -6,6 +6,14 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+    <View
+            android:id="@+id/swipe_down_handle"
+            android:layout_width="80dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/rounded_handle" />
+
+    <!-- Line Separator -->
     <TextView
             android:id="@+id/tv_bottom_sheet_vacation_title"
             android:layout_width="match_parent"
@@ -14,9 +22,13 @@
             android:text="@string/placeholder"
             android:ellipsize="end"
             android:maxLines="1"
-            android:padding="16dp"
+            android:padding="24dp"
             android:textAlignment="center" />
 
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black_opacity10" />
 
     <TextView
             android:id="@+id/tv_edit_row"
@@ -28,6 +40,12 @@
             app:drawableLeftCompat="@drawable/baseline_edit_24"
             android:drawablePadding="20dp" />
 
+    <!-- Line Separator -->
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black_opacity10" />
+
     <TextView
             android:id="@+id/tv_alert_row"
             android:layout_width="match_parent"
@@ -38,6 +56,12 @@
             app:drawableLeftCompat="@drawable/baseline_add_alert_24"
             android:drawablePadding="20dp" />
 
+    <!-- Line Separator -->
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black_opacity10" />
+
     <TextView
             android:id="@+id/tv_share_row"
             android:layout_width="match_parent"
@@ -45,8 +69,14 @@
             android:textSize="20sp"
             android:text="@string/share"
             android:padding="16dp"
-            app:drawableLeftCompat="@drawable/baseline_add_alert_24"
+            app:drawableLeftCompat="@drawable/baseline_share_24"
             android:drawablePadding="20dp" />
+
+    <!-- Line Separator -->
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black_opacity10" />
 
     <TextView
             android:id="@+id/tv_delete_row"

@@ -4,11 +4,17 @@
         <!-- Customize your light theme here. -->
         <item name="android:windowBackground">@color/light_grey</item>
         <item name="android:windowActionBar">@color/white</item>
+        <item name="android:actionOverflowButtonStyle">@style/overflow_icon_style</item>
     </style>
 
     <style name="toolbar_title" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">24sp</item>
         <item name="android:fontFamily">@font/robotoregular</item>
+    </style>
+
+    <style name="overflow_icon_style" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:src">@drawable/baseline_more_vert_24</item>
+
     </style>
 </resources>
