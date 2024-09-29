@@ -119,7 +119,7 @@ public class ExcursionAlert extends AppCompatActivity {
         new AlertDialog.Builder(this).setTitle("Log out").setMessage("Are you sure you want to log out?").setPositiveButton("Yes", (dialog, which) -> {
             // Log out the user and navigate to the login screen
             FirebaseAuth.getInstance().signOut();
-            Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Logged out successfully.", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, LoginActivity.class));
             finish();  // End the current activity
         }).setNegativeButton("No", (dialog, which) -> {
@@ -132,7 +132,7 @@ public class ExcursionAlert extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Notification permission is required for alerts", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Notification permission is required for alerts.", Toast.LENGTH_LONG).show();
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -146,7 +146,7 @@ public class ExcursionAlert extends AppCompatActivity {
         // Schedule notifications
         scheduleNotification(date);
 
-        Toast.makeText(this, "Notification set for the start date!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Notification set for the start date.", Toast.LENGTH_SHORT).show();
         finish();
     }
 

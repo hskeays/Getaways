@@ -132,7 +132,7 @@ public class VacationList extends AppCompatActivity {
         new AlertDialog.Builder(this).setTitle("Log out").setMessage("Are you sure you want to log out?").setPositiveButton("Yes", (dialog, which) -> {
             // Log out the user and navigate to the login screen
             FirebaseAuth.getInstance().signOut();
-            Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Logged out successfully.", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, LoginActivity.class));
             finish();  // End the current activity
         }).setNegativeButton("No", (dialog, which) -> {

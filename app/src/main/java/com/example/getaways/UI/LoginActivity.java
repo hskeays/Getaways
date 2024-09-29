@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
         String password = passwordField.getText().toString().trim();
 
         if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(LoginActivity.this, "Please enter both email and password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "Please enter both email and password.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
             } else {
                 // If sign in fails
-                Toast.makeText(LoginActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -113,13 +113,13 @@ public class LoginActivity extends AppCompatActivity {
         String password = passwordField.getText().toString().trim();
 
         if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(LoginActivity.this, "Please enter both email and password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "Please enter both email and password..", Toast.LENGTH_SHORT).show();
             return;
         }
 
         // Minimum password length requirement check
         if (password.length() < 6) {
-            Toast.makeText(LoginActivity.this, "Password must be at least 6 characters", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "Password must be at least 6 characters.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -127,12 +127,12 @@ public class LoginActivity extends AppCompatActivity {
             if (task.isSuccessful()) {
                 // Sign-up success
                 FirebaseUser user = mAuth.getCurrentUser();
-                Toast.makeText(LoginActivity.this, "Account created successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Account created successfully!", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(this, VacationList.class));
                 finish();
             } else {
                 // If sign-up fails
-                Toast.makeText(LoginActivity.this, "Account creation failed: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Account creation failed: " + Objects.requireNonNull(task.getException()).getMessage() + ".", Toast.LENGTH_SHORT).show();
             }
         });
     }

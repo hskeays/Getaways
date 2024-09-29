@@ -183,7 +183,7 @@ public class VacationDetails extends AppCompatActivity {
         new android.app.AlertDialog.Builder(this).setTitle("Log out").setMessage("Are you sure you want to log out?").setPositiveButton("Yes", (dialog, which) -> {
             // Log out the user and navigate to the login screen
             FirebaseAuth.getInstance().signOut();
-            Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Logged out successfully.", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, LoginActivity.class));
             finish();  // End the current activity
         }).setNegativeButton("No", (dialog, which) -> {
@@ -227,7 +227,7 @@ public class VacationDetails extends AppCompatActivity {
         } else if (!isDateOnOrAfterCurrentDate(startDate)) {
             Toast.makeText(this, "Start date must be today, or in the future.", Toast.LENGTH_SHORT).show();
         } else if (!isDateBefore(startDate, endDate)) {
-            Toast.makeText(this, "Start date must be before end date", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Start date must be before end date.", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Invalid input, please try again.", Toast.LENGTH_SHORT).show();
         }
