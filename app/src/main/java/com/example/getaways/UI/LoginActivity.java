@@ -78,6 +78,10 @@ public class LoginActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.appbar_menu, menu);
         menu.findItem(R.id.ic_search).setVisible(false);
+        menu.findItem(R.id.ic_home).setVisible(false);
+        menu.findItem(R.id.ic_logout).setVisible(false);
+        menu.findItem(R.id.vacation_list).setVisible(false);
+        menu.findItem(R.id.vacation_details).setVisible(false);
         return true;
     }
 
