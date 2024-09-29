@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.getaways.R;
+import com.example.getaways.UI.BottomSheetFragment;
 import com.example.getaways.UI.VacationDetails;
 import com.example.getaways.entities.Vacation;
 
@@ -77,11 +80,13 @@ public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.Vacati
     public class VacationViewHolder extends RecyclerView.ViewHolder {
         private final TextView vacationItemView;
         private final TextView vacationItemViewDate;
+        private final ImageButton btnMenu;
 
         public VacationViewHolder(@NonNull View itemView) {
             super(itemView);
             vacationItemView = itemView.findViewById(R.id.tv_vacation_list_item);
             vacationItemViewDate = itemView.findViewById(R.id.tv_vacation_list_item_date);
+            btnMenu = itemView.findViewById(R.id.btn_menu);
 
             View vacationItemViewCard = itemView.findViewById(R.id.tv_vacation_list_item_card);
             vacationItemViewCard.setOnClickListener(view -> {
@@ -95,6 +100,16 @@ public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.Vacati
                     intent.putExtra("START_DATE", current.getStartDate());
                     intent.putExtra("END_DATE", current.getEndDate());
                     context.startActivity(intent);
+                }
+            });
+
+            // Click listener for the menu icon
+            btnMenu.setOnClickListener(view -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    final Vacation current = filteredVacations.get(position);
+                    BottomSheetFragment bottomSheet = new BottomSheetFragment();
+                    bottomSheet.show(((AppCompatActivity) context).getSupportFragmentManager(), bottomSheet.getTag());
                 }
             });
         }

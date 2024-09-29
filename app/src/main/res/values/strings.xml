@@ -54,4 +54,5 @@
     <string name="logout">Logout</string>
     <string name="my_vacations">My Vacations</string>
     <string name="add_new_vacation">Add New Vacation</string>
+    <string name="menu_icon">Menu Icon</string>
 </resources>

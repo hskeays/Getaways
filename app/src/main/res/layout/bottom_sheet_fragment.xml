@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+    <!--TODO: Implement bottom sheet style-->
+
+    <TextView
+            android:id="@+id/text_option_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Option 1"
+            android:padding="16dp"
+            android:background="?attr/selectableItemBackground" />
+
+    <TextView
+            android:id="@+id/text_option_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Option 2"
+            android:padding="16dp"
+            android:background="?attr/selectableItemBackground" />
+
+    <TextView
+            android:id="@+id/text_option_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Option 3"
+            android:padding="16dp"
+            android:background="?attr/selectableItemBackground" />
+</LinearLayout>

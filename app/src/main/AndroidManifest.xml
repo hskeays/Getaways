@@ -16,6 +16,9 @@
             android:supportsRtl="true"
             android:theme="@style/Base.Theme.Getaways"
             tools:targetApi="31">
+        <activity
+                android:name=".UI.BottomSheetFragment"
+                android:exported="false" />
 
         <receiver android:name=".UI.receivers.NotificationReceiver" />
 
@@ -23,7 +26,6 @@
                 android:name=".UI.ExcursionAlert"
                 android:exported="false"
                 android:label="Excursion Alert" />
-
         <activity
                 android:name=".UI.VacationAlert"
                 android:exported="false"
