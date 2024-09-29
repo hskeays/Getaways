@@ -63,6 +63,7 @@
     <TextView
             android:text="@string/placeholder"
             android:layout_width="0dp"
+            android:maxWidth="320dp"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:ellipsize="end"
@@ -79,6 +80,7 @@
     <TextView
             android:text="@string/placeholder"
             android:layout_width="0dp"
+            android:maxWidth="320dp"
             android:textSize="20sp"
             android:ellipsize="end"
             android:maxLines="1"
@@ -94,6 +96,7 @@
     <TextView
             android:text="@string/placeholder"
             android:layout_width="0dp"
+            android:maxWidth="320dp"
             android:layout_height="wrap_content"
             android:id="@+id/tv_start_date_alert"
             android:textSize="20sp"
@@ -109,6 +112,7 @@
     <TextView
             android:text="@string/placeholder"
             android:layout_width="0dp"
+            android:maxWidth="320dp"
             android:textSize="20sp"
             android:ellipsize="end"
             android:maxLines="1"

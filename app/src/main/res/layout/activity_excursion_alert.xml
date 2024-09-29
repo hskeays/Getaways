@@ -42,26 +42,34 @@
 
     <TextView
             android:text="@string/placeholder"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="20sp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:id="@+id/tv_excursion_title_alert"
             app:layout_constraintStart_toEndOf="@+id/tv_excursion_title_alert_label"
             android:layout_marginStart="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_excursion_title_alert_label"
             app:layout_constraintTop_toTopOf="@+id/tv_excursion_title_alert_label"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="32dp" />
 
     <TextView
             android:text="@string/placeholder"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:textSize="20sp"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:id="@+id/tv_excursion_date_alert"
             app:layout_constraintStart_toStartOf="@+id/tv_excursion_title_alert"
             app:layout_constraintTop_toTopOf="@+id/tv_excursion_date_alert_label"
             app:layout_constraintBottom_toBottomOf="@+id/tv_excursion_date_alert_label"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="32dp" />
 
 
     <Button
