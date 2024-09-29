@@ -122,8 +122,6 @@ public class VacationList extends AppCompatActivity {
             getOnBackPressedDispatcher().onBackPressed();
         } else if (id == R.id.ic_logout) {
             showLogoutDialog();
-        } else if (id == R.id.vacation_list) {
-            startActivity(new Intent(this, VacationList.class));
         } else if (id == R.id.vacation_details) {
             startActivity(new Intent(this, VacationDetails.class));
         }

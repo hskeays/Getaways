@@ -55,4 +55,7 @@
     <string name="my_vacations">My Vacations</string>
     <string name="add_new_vacation">Add New Vacation</string>
     <string name="menu_icon">Menu Icon</string>
+    <string name="edit">Edit</string>
+    <string name="edit_icon">Edit icon</string>
+    <string name="alert_icon">Alert icon</string>
 </resources>

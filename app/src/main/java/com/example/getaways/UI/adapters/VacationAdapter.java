@@ -43,7 +43,7 @@ public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.Vacati
     public void onBindViewHolder(@NonNull VacationViewHolder holder, int position) {
         final Vacation current = filteredVacations.get(position);
         holder.vacationItemView.setText(current.getVacationTitle());
-        String date = current.getStartDate() + "-" + current.getEndDate();
+        String date = current.getStartDate() + " -\n" + current.getEndDate();
         holder.vacationItemViewDate.setText(date);
     }
 
@@ -109,10 +109,8 @@ public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.Vacati
                 if (position != RecyclerView.NO_POSITION) {
                     final Vacation current = filteredVacations.get(position);
 
-                    // Create a new instance of the BottomSheetFragment with the vacation title
-                    BottomSheetFragment bottomSheet = BottomSheetFragment.newInstance(current.getVacationTitle());
-
-                    // Show the BottomSheetFragment
+                    // Create a new instance of the BottomSheetFragment with vacation details
+                    BottomSheetFragment bottomSheet = BottomSheetFragment.newInstance(current.getId(), current.getVacationTitle(), current.getHotelName(), current.getStartDate(), current.getEndDate());
                     bottomSheet.show(((AppCompatActivity) context).getSupportFragmentManager(), bottomSheet.getTag());
                 }
             });

@@ -97,6 +97,7 @@ public class VacationDetails extends AppCompatActivity {
 
         Button btnSave = findViewById(R.id.btn_save_vacation);
         btnSave.setOnClickListener(view -> handleSaveButtonClick());
+
         Button btnDelete = findViewById(R.id.btn_delete_vacation);
         btnDelete.setOnClickListener(view -> handleDeleteButtonClick(vacationID));
 

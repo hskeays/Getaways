@@ -7,4 +7,5 @@
     <color name="light_grey">#F6F6F6</color>
     <color name="light_tan">#DCCDB6</color>
     <color name="hint_grey">#636363</color>
+    <color name="color_primary">#445E91</color>
 </resources>
