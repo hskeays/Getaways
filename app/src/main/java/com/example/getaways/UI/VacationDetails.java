@@ -25,7 +25,7 @@ import com.example.getaways.R;
 import com.example.getaways.UI.adapters.ExcursionAdapter;
 import com.example.getaways.database.Repository;
 import com.example.getaways.entities.Vacation;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.ParseException;
@@ -107,7 +107,7 @@ public class VacationDetails extends AppCompatActivity {
         Button btnShare = findViewById(R.id.btn_share_vacation);
         btnShare.setOnClickListener(view -> handleShareButtonClick());
 
-        FloatingActionButton addFloatingActionButton = findViewById(R.id.fab_add_vacation_details);
+        ExtendedFloatingActionButton addFloatingActionButton = findViewById(R.id.fab_add_vacation_details);
         addFloatingActionButton.setOnClickListener(view -> handleFabButtonClick());
 
         // If vacation clicked and exists, prefill details in views

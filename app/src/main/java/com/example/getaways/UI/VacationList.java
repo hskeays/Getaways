@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.getaways.R;
 import com.example.getaways.UI.adapters.VacationAdapter;
 import com.example.getaways.database.Repository;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class VacationList extends AppCompatActivity {
@@ -57,7 +57,7 @@ public class VacationList extends AppCompatActivity {
 
         // ***EVALUATION, TASK B1-a: Allow the user to add as many vacations as desired.
         // Create intent to go to Vacation Details activity for creating new vacation
-        FloatingActionButton addFloatingActionButton = findViewById(R.id.fab_add_vacation_list);
+        ExtendedFloatingActionButton addFloatingActionButton = findViewById(R.id.fab_add_vacation_list);
         addFloatingActionButton.setOnClickListener(view -> {
             Intent vacationDetailsIntent = new Intent(VacationList.this, VacationDetails.class);
             startActivity(vacationDetailsIntent);

@@ -65,33 +65,47 @@
             app:layout_constraintTop_toTopOf="@+id/tv_excursion_date"
             android:layout_marginStart="32dp" />
 
-    <Button
-            android:text="@string/save"
-            android:layout_width="100dp"
+    <LinearLayout
+            android:id="@+id/button_container_excursion"
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/btn_save_excursion"
-            app:layout_constraintTop_toBottomOf="@+id/tv_excursion_date"
+            android:orientation="horizontal"
+            android:gravity="center"
             android:layout_marginTop="48dp"
-            app:layout_constraintEnd_toStartOf="@+id/btn_delete_excursion"
-            android:layout_marginEnd="8dp" />
-
-    <Button
-            android:text="@string/delete"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_delete_excursion"
-            app:layout_constraintTop_toTopOf="@+id/btn_save_excursion"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/tv_excursion_date">
 
-    <Button
-            android:text="@string/alert"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_alert_excursion"
-            app:layout_constraintStart_toEndOf="@+id/btn_delete_excursion"
-            app:layout_constraintTop_toTopOf="@+id/btn_delete_excursion"
-            android:layout_marginStart="8dp" />
+        <Button
+                android:id="@+id/btn_save_excursion"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:text="@string/save"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/color_primary" />
+
+        <Button
+                android:id="@+id/btn_delete_excursion"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:text="@string/delete"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/color_primary" />
+
+        <Button
+                android:id="@+id/btn_alert_excursion"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:text="@string/alert"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/color_primary" />
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
