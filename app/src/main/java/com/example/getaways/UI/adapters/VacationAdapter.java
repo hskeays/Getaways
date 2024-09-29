@@ -108,7 +108,11 @@ public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.Vacati
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     final Vacation current = filteredVacations.get(position);
-                    BottomSheetFragment bottomSheet = new BottomSheetFragment();
+
+                    // Create a new instance of the BottomSheetFragment with the vacation title
+                    BottomSheetFragment bottomSheet = BottomSheetFragment.newInstance(current.getVacationTitle());
+
+                    // Show the BottomSheetFragment
                     bottomSheet.show(((AppCompatActivity) context).getSupportFragmentManager(), bottomSheet.getTag());
                 }
             });
