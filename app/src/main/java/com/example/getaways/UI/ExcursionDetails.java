@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -31,7 +30,7 @@ import java.util.Date;
 
 // ***EVALUATION, TASK B3-h:  Add, update, and delete as many excursions as needed.
 // Class that handles adding, updating, deleting excursions
-public class ExcursionDetails extends AppCompatActivity {
+public class ExcursionDetails extends BaseActivity {
     private Repository repository;
     private EditText etvExcursionTitle;
     private Button btnPickExcursionDate;
@@ -95,6 +94,12 @@ public class ExcursionDetails extends AppCompatActivity {
             etvExcursionTitle.setText(excursionTitle);
             btnPickExcursionDate.setText(excursionDate);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setStatusBarColorBasedOnTheme();
     }
 
     @Override

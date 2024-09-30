@@ -3,7 +3,6 @@
     <style name="Base.Theme.Getaways" parent="Theme.Material3.DynamicColors.Light.NoActionBar">
         <!-- Customize your light theme here. -->
         <item name="android:windowBackground">@color/light_grey</item>
-        <item name="android:windowActionBar">@color/white</item>
         <item name="android:actionOverflowButtonStyle">@style/overflow_icon_style</item>
     </style>
 

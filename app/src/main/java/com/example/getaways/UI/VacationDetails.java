@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -20,6 +19,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.getaways.R;
 import com.example.getaways.UI.adapters.ExcursionAdapter;
@@ -38,13 +38,14 @@ import java.util.Date;
 // a: Display a detailed view of the vacation, including all vacation details. This view can also be used to add and update the vacation information.
 // b: Enter, edit, and delete vacation information
 // Activity for displaying, saving/updating, sharing, alerting a vacation
-public class VacationDetails extends AppCompatActivity {
+public class VacationDetails extends BaseActivity {
     Repository repository;
     ExcursionAdapter excursionAdapter;
     private EditText etvVacationTitle;
     private EditText etvHotelName;
     private Button btnPickStartDate;
     private Button btnPickEndDate;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +82,10 @@ public class VacationDetails extends AppCompatActivity {
         String hotelName = getIntent().getStringExtra("HOTEL_NAME");
         String startDate = getIntent().getStringExtra("START_DATE");
         String endDate = getIntent().getStringExtra("END_DATE");
+
+        // InitializeSwipeRefreshLayout, Set up the swipe-to-refresh listener
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout_vacation_details);
+        swipeRefreshLayout.setOnRefreshListener(() -> refreshVacationList(vacationID));
 
         // ***EVALUATION, TASK B2: Include the following details for each vacation: title, hotel or other place where you will be staying, start date, end date
         // Create views for users to enter vacation details
@@ -140,6 +145,8 @@ public class VacationDetails extends AppCompatActivity {
         } else {
             excursionAdapter.setExcursions(Collections.emptyList());
         }
+
+        setStatusBarColorBasedOnTheme();
     }
 
     @Override
@@ -408,5 +415,12 @@ public class VacationDetails extends AppCompatActivity {
             e.printStackTrace();
             return false;
         }
+    }
+
+    private void refreshVacationList(int vacationID) {
+        repository.getAssociatedExcursions(vacationID).observe(this, excursions -> {
+            excursionAdapter.setExcursions(excursions);
+            swipeRefreshLayout.setRefreshing(false);
+        });
     }
 }

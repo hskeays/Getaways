@@ -18,28 +18,28 @@
                 android:text="@string/placeholder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="22sp"
-                android:maxWidth="160dp"
+                android:textSize="18sp"
+                android:maxWidth="180dp"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:id="@+id/tv_vacation_list_item"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_vacation_list_item_date"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginStart="24dp"
-                app:layout_constraintTop_toTopOf="@+id/tv_vacation_list_item_date"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="24dp" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginBottom="32dp"
+                android:layout_marginTop="32dp" />
 
         <TextView
                 android:text="@string/placeholder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:id="@+id/tv_vacation_list_item_date"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_vacation_list_item"
                 app:layout_constraintEnd_toStartOf="@+id/btn_menu"
                 android:layout_marginEnd="16dp"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/tv_vacation_list_item" />
 
         <ImageButton
                 android:layout_width="48dp"

@@ -21,7 +21,6 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -39,7 +38,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class ExcursionAlert extends AppCompatActivity {
+public class ExcursionAlert extends BaseActivity {
     private static final int REQUEST_CODE = 0;
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
@@ -88,6 +87,12 @@ public class ExcursionAlert extends AppCompatActivity {
 
         Button btnSetAlert = findViewById(R.id.btn_set_alerts_excursion);
         btnSetAlert.setOnClickListener(view -> handleSetAlertsButtonClick());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setStatusBarColorBasedOnTheme();
     }
 
     @Override

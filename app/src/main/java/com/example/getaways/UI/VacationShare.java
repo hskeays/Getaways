@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -30,7 +29,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VacationShare extends AppCompatActivity {
+public class VacationShare extends BaseActivity {
     ExcursionAdapter excursionAdapter;
     private EditText etmlUserMessage;
 
@@ -93,6 +92,12 @@ public class VacationShare extends AppCompatActivity {
 
         Button btnShareEmail = findViewById(R.id.btn_share_email);
         btnShareEmail.setOnClickListener(view -> handleShareEmailButtonClick());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setStatusBarColorBasedOnTheme();
     }
 
     private String constructEmailText(String userMessage, List<String> excursionTitles) {

@@ -21,7 +21,6 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -43,7 +42,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class VacationAlert extends AppCompatActivity {
+public class VacationAlert extends BaseActivity {
     private static final int REQUEST_CODE = 0;
     ExcursionAdapter excursionAdapter;
 
@@ -113,6 +112,12 @@ public class VacationAlert extends AppCompatActivity {
         // Initialize and set on click handler to alert button
         Button btnAlert = findViewById(R.id.btn_set_alerts);
         btnAlert.setOnClickListener(view -> handleSetAlertButtonClick());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setStatusBarColorBasedOnTheme();
     }
 
     @Override

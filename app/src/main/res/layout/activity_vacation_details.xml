@@ -176,18 +176,30 @@
             app:layout_constraintTop_toBottomOf="@+id/button_container"
             android:layout_marginTop="48dp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_excursion_list_items"
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout_vacation_details"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintTop_toBottomOf="@+id/tv_current_excursions_label"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/fab_add_vacation_details"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_excursion_list_items"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toBottomOf="@+id/tv_current_excursions_label"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/fab_add_vacation_details" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:layout_width="170dp"
@@ -201,6 +213,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginEnd="32dp"
-            android:layout_marginBottom="32dp" />
+            android:layout_marginBottom="56dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

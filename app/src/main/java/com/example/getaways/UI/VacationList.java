@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -18,6 +17,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.getaways.R;
 import com.example.getaways.UI.adapters.VacationAdapter;
@@ -25,15 +25,21 @@ import com.example.getaways.database.Repository;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class VacationList extends AppCompatActivity {
+public class VacationList extends BaseActivity {
     Repository repository;
     VacationAdapter vacationAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_vacation_list);
+
+        // InitializeSwipeRefreshLayout, Set up the swipe-to-refresh listener
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(this::refreshVacationList);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -47,6 +53,7 @@ public class VacationList extends AppCompatActivity {
             getSupportActionBar().setTitle("My Vacations");
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.baseline_arrow_back_ios_new_24);
+            setStatusBarColorBasedOnTheme();
         }
 
         // Configure overflow icon
@@ -55,7 +62,6 @@ public class VacationList extends AppCompatActivity {
             overflowIcon.setTint(ContextCompat.getColor(this, android.R.color.black));
         }
 
-        // ***EVALUATION, TASK B1-a: Allow the user to add as many vacations as desired.
         // Create intent to go to Vacation Details activity for creating new vacation
         ExtendedFloatingActionButton addFloatingActionButton = findViewById(R.id.fab_add_vacation_list);
         addFloatingActionButton.setOnClickListener(view -> {
@@ -67,21 +73,22 @@ public class VacationList extends AppCompatActivity {
         repository = new Repository(getApplication());
         vacationAdapter = new VacationAdapter(this);
 
-        // ***EVALUATION, TASK B1-a: Allow the user to add as many vacations as desired.
-        // Create recycler view with all saved vacations queried from database
-
         // Set up RecyclerView
         RecyclerView recyclerView = findViewById(R.id.rv_vacation_list_items);
         recyclerView.setAdapter(vacationAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Observe LiveData and update adapter
-        repository.getAllVacations().observe(this, vacationList -> vacationAdapter.setVacations(vacationList));
+        repository.getAllVacations().observe(this, vacationList -> {
+            vacationAdapter.setVacations(vacationList);
+        });
     }
+
 
     @Override
     protected void onResume() {
         super.onResume();
+        setStatusBarColorBasedOnTheme();
         repository.getAllVacations().observe(this, vacationList -> vacationAdapter.setVacations(vacationList));
     }
 
@@ -139,5 +146,12 @@ public class VacationList extends AppCompatActivity {
             // Dismiss the dialog if the user clicks "No"
             dialog.dismiss();
         }).create().show();
+    }
+
+    private void refreshVacationList() {
+        repository.getAllVacations().observe(this, vacationList -> {
+            vacationAdapter.setVacations(vacationList);
+            swipeRefreshLayout.setRefreshing(false);
+        });
     }
 }

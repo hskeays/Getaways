@@ -9,7 +9,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -23,7 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     private FirebaseAuth mAuth;
     private EditText emailField, passwordField;
@@ -72,6 +71,12 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(new Intent(this, VacationList.class));
             finish();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setStatusBarColorBasedOnTheme();
     }
 
     @Override
