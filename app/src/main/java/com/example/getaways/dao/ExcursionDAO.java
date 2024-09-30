@@ -24,6 +24,9 @@ public interface ExcursionDAO {
     @Delete
     void delete(Excursion excursion);
 
+    @Query("DELETE FROM excursions WHERE vacationID = :vacationID")
+    void deleteAllAssociatedExcursions(int vacationID);
+
     @Query("SELECT * FROM excursions ORDER BY id ASC;")
     LiveData<List<Excursion>> getAllExcursions();
 

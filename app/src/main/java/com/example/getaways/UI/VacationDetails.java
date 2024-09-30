@@ -255,7 +255,14 @@ public class VacationDetails extends BaseActivity {
                                     finish();
                                 }).setNegativeButton("No", (dialog, which) -> dialog.dismiss()).show();
                             } else {
-                                Toast.makeText(this, "Cannot delete vacation with associated excursions.", Toast.LENGTH_SHORT).show();
+                                new AlertDialog.Builder(this).setTitle("Delete All Excursions").setMessage("Cannot delete vacation with associated excursions. Do you want to delete all excursions?").setPositiveButton("Yes", (dialog, which) -> {
+                                    new AlertDialog.Builder(this).setTitle("Delete All Excursions").setMessage("Are you sure you want to delete this vacation and all excursions?").setPositiveButton("Yes", (innerDialog, innerWhich) -> {
+                                        repository.deleteAllAssociatedExcursions(vacation.getId());
+                                        repository.delete(vacation);
+                                        Toast.makeText(this, "Successfully deleted vacation.", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    }).setNegativeButton("No", (innerDialog, innerWhich) -> innerDialog.dismiss()).show();
+                                }).setNegativeButton("No", (dialog, which) -> dialog.dismiss()).show();
                             }
                         });
 

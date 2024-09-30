@@ -8,7 +8,6 @@ import com.example.getaways.dao.ExcursionDAO;
 import com.example.getaways.dao.VacationDAO;
 import com.example.getaways.entities.Excursion;
 import com.example.getaways.entities.Vacation;
-import com.example.getaways.entities.VacationWithExcursions;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -29,10 +28,6 @@ public class Repository {
     // GET **********************
     public LiveData<List<Vacation>> getAllVacations() {
         return vacationDAO.getAllVacations();
-    }
-
-    public LiveData<List<VacationWithExcursions>> getAllVacationsWithExcursions() {
-        return vacationDAO.getAllVacationsWithExcursions();
     }
 
     public LiveData<Vacation> getVacationByID(int vacationID) {
@@ -84,6 +79,10 @@ public class Repository {
 
     public void delete(Excursion excursion) {
         databaseExecutor.execute(() -> excursionDAO.delete(excursion));
+    }
+
+    public void deleteAllAssociatedExcursions(int vacationID) {
+        databaseExecutor.execute(() -> excursionDAO.deleteAllAssociatedExcursions(vacationID));
     }
 
     public LiveData<Integer> getLastInsertedVacation() {

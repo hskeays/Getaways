@@ -22,7 +22,8 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
     private static final String HOTEL_NAME = "HOTEL_NAME";
     private static final String VACATION_START_DATE = "VACATION_START_DATE";
     private static final String VACATION_END_DATE = "VACATION_END_DATE";
-    Repository repository;
+
+    private Repository repository;
     private int vacationID;
     private String vacationTitle;
     private String hotelName;
@@ -98,7 +99,6 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
                 repository.getVacationByID(vacationID).observe(this, vacation -> {
                     if (vacation != null) {
                         repository.getAssociatedExcursions(vacationID).observe(this, excursions -> {
-                            // ***EVALUATION, TASK B1-b: Implement validation so that a vacation cannot be deleted if excursions are associated with it.
                             // Prevent deletion of vacations if the associated excursions list is not empty
                             if (excursions == null || excursions.isEmpty()) {
                                 new AlertDialog.Builder(requireContext()).setTitle("Delete Vacation").setMessage("Are you sure you want to delete this vacation?").setPositiveButton("Yes", (dialog, which) -> {
@@ -107,10 +107,16 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
                                     dismiss();
                                 }).setNegativeButton("No", (dialog, which) -> dialog.dismiss()).show();
                             } else {
-                                Toast.makeText(getContext(), "Cannot delete vacation with associated excursions.", Toast.LENGTH_SHORT).show();
+                                new AlertDialog.Builder(requireContext()).setTitle("Delete All Excursions").setMessage("Cannot delete vacation with associated excursions. Do you want to delete all excursions?").setPositiveButton("Yes", (dialog, which) -> {
+                                    new AlertDialog.Builder(requireContext()).setTitle("Delete All Excursions").setMessage("Are you sure you want to delete this vacation and all excursions?").setPositiveButton("Yes", (innerDialog, innerWhich) -> {
+                                        repository.deleteAllAssociatedExcursions(vacationID); // Call to delete excursions
+                                        repository.delete(vacation); // Call to delete vacation
+                                        Toast.makeText(getContext(), "Successfully deleted vacation and excursions.", Toast.LENGTH_SHORT).show();
+                                        dismiss(); // Close the bottom sheet
+                                    }).setNegativeButton("No", (innerDialog, innerWhich) -> innerDialog.dismiss()).show();
+                                }).setNegativeButton("No", (dialog, which) -> dialog.dismiss()).show();
                             }
                         });
-
                     }
                 });
             }
