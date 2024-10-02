@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -24,6 +25,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.getaways.R;
 import com.example.getaways.UI.adapters.ExcursionAdapter;
 import com.example.getaways.database.Repository;
+import com.example.getaways.entities.Excursion;
 import com.example.getaways.entities.Vacation;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 // ***EVALUATION, TASK B3-a/b:
 // a: Display a detailed view of the vacation, including all vacation details. This view can also be used to add and update the vacation information.
@@ -208,7 +211,7 @@ public class VacationDetails extends BaseActivity {
         String startDate = btnPickStartDate.getText().toString();
         String endDate = btnPickEndDate.getText().toString();
 
-        if (isValidVacation(vacationTitle, hotelName, startDate, endDate)) {
+        if (isValidVacation(vacationID, vacationTitle, hotelName, startDate, endDate)) {
             Vacation vacation = new Vacation(vacationTitle, hotelName, startDate, endDate);
 
             if (vacationID == 0) {
@@ -241,19 +244,28 @@ public class VacationDetails extends BaseActivity {
     }
 
     private void handleDeleteButtonClick(int vacationID) {
-        repository.vacationExists(vacationID).observe(this, exists -> {
+        // First level observer for checking if the vacation exists
+        LiveData<Boolean> vacationExistsLiveData = repository.vacationExists(vacationID);
+        vacationExistsLiveData.observe(this, exists -> {
             if (exists) {
-                repository.getVacationByID(vacationID).observe(this, vacation -> {
+                // Second level observer for retrieving the vacation details
+                LiveData<Vacation> vacationLiveData = repository.getVacationByID(vacationID);
+                vacationLiveData.observe(this, vacation -> {
                     if (vacation != null) {
-                        repository.getAssociatedExcursions(vacationID).observe(this, excursions -> {
-                            // ***EVALUATION, TASK B1-b: Implement validation so that a vacation cannot be deleted if excursions are associated with it.
-                            // Prevent deletion of vacations if the associated excursions list is not empty
+                        // Third level observer for retrieving associated excursions
+                        LiveData<List<Excursion>> excursionsLiveData = repository.getAssociatedExcursions(vacationID);
+                        excursionsLiveData.observe(this, excursions -> {
                             if (excursions == null || excursions.isEmpty()) {
                                 new AlertDialog.Builder(this).setTitle("Delete Vacation").setMessage("Are you sure you want to delete this vacation?").setPositiveButton("Yes", (dialog, which) -> {
                                     repository.delete(vacation);
                                     Toast.makeText(this, "Successfully deleted vacation.", Toast.LENGTH_SHORT).show();
                                     finish();
-                                }).setNegativeButton("No", (dialog, which) -> dialog.dismiss()).show();
+                                }).setNegativeButton("No", (dialog, which) -> dialog.dismiss()).setOnDismissListener(dialog -> {
+                                    // Remove observer after dialog is dismissed
+                                    vacationExistsLiveData.removeObservers(this);
+                                    vacationLiveData.removeObservers(this);
+                                    excursionsLiveData.removeObservers(this);
+                                }).show();
                             } else {
                                 new AlertDialog.Builder(this).setTitle("Delete All Excursions").setMessage("Cannot delete vacation with associated excursions. Do you want to delete all excursions?").setPositiveButton("Yes", (dialog, which) -> {
                                     new AlertDialog.Builder(this).setTitle("Delete All Excursions").setMessage("Are you sure you want to delete this vacation and all excursions?").setPositiveButton("Yes", (innerDialog, innerWhich) -> {
@@ -261,20 +273,32 @@ public class VacationDetails extends BaseActivity {
                                         repository.delete(vacation);
                                         Toast.makeText(this, "Successfully deleted vacation.", Toast.LENGTH_SHORT).show();
                                         finish();
-                                    }).setNegativeButton("No", (innerDialog, innerWhich) -> innerDialog.dismiss()).show();
-                                }).setNegativeButton("No", (dialog, which) -> dialog.dismiss()).show();
+                                    }).setNegativeButton("No", (innerDialog, innerWhich) -> innerDialog.dismiss()).setOnDismissListener(innerDialog -> {
+                                        // Remove observer after dialog is dismissed
+                                        vacationExistsLiveData.removeObservers(this);
+                                        vacationLiveData.removeObservers(this);
+                                        excursionsLiveData.removeObservers(this);
+                                    }).show();
+                                }).setNegativeButton("No", (dialog, which) -> dialog.dismiss()).setOnDismissListener(dialog -> {
+                                    // Remove observer after dialog is dismissed
+                                    vacationExistsLiveData.removeObservers(this);
+                                    vacationLiveData.removeObservers(this);
+                                    excursionsLiveData.removeObservers(this);
+                                }).show();
                             }
                         });
-
                     }
                 });
             } else {
                 if (!isFinishing()) {
                     Toast.makeText(this, "Failed to delete vacation. Vacation does not exist.", Toast.LENGTH_SHORT).show();
                 }
+                // Remove observer after check is complete
+                vacationExistsLiveData.removeObservers(this);
             }
         });
     }
+
 
     // ***EVALUATION, TASK B3-e:  Include an alert that the user can set which will trigger on the start and end date, displaying the vacation title and whether it is starting or ending.
     // Handle alert button click to create intent with vacation details
@@ -285,7 +309,7 @@ public class VacationDetails extends BaseActivity {
         String startDate = btnPickStartDate.getText().toString();
         String endDate = btnPickEndDate.getText().toString();
 
-        if (!isValidVacation(vacationTitle, hotelName, startDate, endDate)) {
+        if (!isValidVacation(vacationID, vacationTitle, hotelName, startDate, endDate)) {
             Toast.makeText(this, "Invalid input, please try again.", Toast.LENGTH_SHORT).show();
         } else if (vacationID == 0) {
             new AlertDialog.Builder(this).setTitle("Save Vacation").setMessage("The vacation must first be saved.").setPositiveButton("Okay", (dialog, which) -> dialog.dismiss()).setIcon(android.R.drawable.ic_dialog_alert).show();
@@ -309,7 +333,7 @@ public class VacationDetails extends BaseActivity {
         String startDate = btnPickStartDate.getText().toString();
         String endDate = btnPickEndDate.getText().toString();
 
-        if (!isValidVacation(vacationTitle, hotelName, startDate, endDate)) {
+        if (!isValidVacation(vacationID, vacationTitle, hotelName, startDate, endDate)) {
             Toast.makeText(this, "Invalid input, please try again.", Toast.LENGTH_SHORT).show();
         } else if (vacationID == 0) {
             new AlertDialog.Builder(this).setTitle("Save Vacation").setMessage("The vacation must first be saved.").setPositiveButton("Okay", (dialog, which) -> dialog.dismiss()).setIcon(android.R.drawable.ic_dialog_alert).show();
@@ -333,7 +357,7 @@ public class VacationDetails extends BaseActivity {
         String startDate = btnPickStartDate.getText().toString();
         String endDate = btnPickEndDate.getText().toString();
 
-        if (isValidVacation(vacationTitle, hotelName, startDate, endDate) && vacationID != 0) {
+        if (isValidVacation(vacationID, vacationTitle, hotelName, startDate, endDate) && vacationID != 0) {
             Intent excursionDetailsIntent = new Intent(VacationDetails.this, ExcursionDetails.class);
             excursionDetailsIntent.putExtra("VACATION_ID", vacationID);
             excursionDetailsIntent.putExtra("VACATION_START_DATE", startDate);
@@ -348,7 +372,10 @@ public class VacationDetails extends BaseActivity {
 
     // ***EVALUATION, TASK B3-c:  Include validation that the input dates are formatted correctly.
     // Create method to validate all vacation input is valid
-    private boolean isValidVacation(String vacationTitle, String hotelName, String startDate, String endDate) {
+    private boolean isValidVacation(int vacationID, String vacationTitle, String hotelName, String startDate, String endDate) {
+        if (vacationID != 0 && !startDate.equals("Pick a date") && !endDate.equals("Pick a date") && !vacationTitle.isEmpty() && !hotelName.isEmpty() && isDateBefore(startDate, endDate)) {
+            return true;
+        }
         return !startDate.equals("Pick a date") && !endDate.equals("Pick a date") && !vacationTitle.isEmpty() && !hotelName.isEmpty() && isDateOnOrAfterCurrentDate(startDate) && isDateBefore(startDate, endDate);
     }
 
