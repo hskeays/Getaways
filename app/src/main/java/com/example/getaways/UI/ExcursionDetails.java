@@ -23,10 +23,7 @@ import com.example.getaways.database.Repository;
 import com.example.getaways.entities.Excursion;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 // ***EVALUATION, TASK B3-h:  Add, update, and delete as many excursions as needed.
 // Class that handles adding, updating, deleting excursions
@@ -225,48 +222,6 @@ public class ExcursionDetails extends BaseActivity {
             alertIntent.putExtra("EXCURSION_TITLE", excursionTitle);
             alertIntent.putExtra("EXCURSION_DATE", excursionDate);
             startActivity(alertIntent);
-        }
-    }
-
-    // ***EVALUATION, TASK B5-c:  Include validation that the input dates are formatted correctly.
-    private String normalizeDate(String date) {
-        String[] parts = date.split("/");
-
-        String month = parts[0].length() == 1 ? "0" + parts[0] : parts[0];
-        String day = parts[1].length() == 1 ? "0" + parts[1] : parts[1];
-        String year = parts[2];
-
-        return month + "/" + day + "/" + year;
-    }
-
-    // ***EVALUATION, TASK B5-f:  Include validation that the excursion date is during the associated vacation.
-    // Method to validate excursion date is between vacation start and end date
-    private boolean isDateBetween(String targetDate, String startDate, String endDate) {
-        // Check for empty input to avoid exception
-        if (startDate.equals("Pick a date") || endDate.equals("Pick a date") || targetDate.equals("Pick a date")) {
-            return false;
-        }
-
-        // Normalize the dates to MM/dd/yyyy format
-        targetDate = normalizeDate(targetDate);
-        startDate = normalizeDate(startDate);
-        endDate = normalizeDate(endDate);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-
-        try {
-            Date parsedTargetDate = sdf.parse(targetDate);
-            Date parsedStartDate = sdf.parse(startDate);
-            Date parsedEndDate = sdf.parse(endDate);
-
-            if (parsedTargetDate != null && parsedStartDate != null && parsedEndDate != null) {
-                return !parsedTargetDate.before(parsedStartDate) && !parsedTargetDate.after(parsedEndDate);
-            } else {
-                return false;
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return false;
         }
     }
 
