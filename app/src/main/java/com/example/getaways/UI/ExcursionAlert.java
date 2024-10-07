@@ -149,16 +149,16 @@ public class ExcursionAlert extends BaseActivity {
 
             if (date != null) {
                 Calendar calendar = Calendar.getInstance();
-//                calendar.setTime(date);
-//
-//                // Set time of day to 8:00 AM
-//                calendar.set(Calendar.HOUR_OF_DAY, 8);
-//                calendar.set(Calendar.MINUTE, 0);
-//                calendar.set(Calendar.SECOND, 0);
+                calendar.setTime(date);
+
+                // Set time of day to 8:00 AM
+                calendar.set(Calendar.HOUR_OF_DAY, 8);
+                calendar.set(Calendar.MINUTE, 0);
+                calendar.set(Calendar.SECOND, 0);
 
                 // FOR TESTING, SET NOTIFICATION FOR 2 SECONDS FROM ALERT BEING SET
+                //calendar.add(Calendar.SECOND, 2);
 
-                calendar.add(Calendar.SECOND, 2);
                 // Schedule the notification
                 setNotificationAlarm(calendar.getTimeInMillis());
             }

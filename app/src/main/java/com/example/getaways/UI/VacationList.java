@@ -25,7 +25,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 public class VacationList extends BaseActivity {
     Repository repository;
     VacationAdapter vacationAdapter;
-    private SwipeRefreshLayout swipeRefreshLayout;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,7 +132,7 @@ public class VacationList extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void refreshVacationList() {
+    void refreshVacationList() {
         repository.getAllVacations().observe(this, vacationList -> {
             vacationAdapter.setVacations(vacationList);
             swipeRefreshLayout.setRefreshing(false);
