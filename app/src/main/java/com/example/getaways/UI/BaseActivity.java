@@ -1,12 +1,15 @@
 package com.example.getaways.UI;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.getaways.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -141,5 +144,18 @@ public class BaseActivity extends AppCompatActivity {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public void showLogoutDialog() {
+        new android.app.AlertDialog.Builder(this).setTitle("Log out").setMessage("Are you sure you want to log out?").setPositiveButton("Yes", (dialog, which) -> {
+            // Log out the user and navigate to the login screen
+            FirebaseAuth.getInstance().signOut();
+            Toast.makeText(this, "Logged out successfully.", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();  // End the current activity
+        }).setNegativeButton("No", (dialog, which) -> {
+            // Dismiss the dialog if the user clicks "No"
+            dialog.dismiss();
+        }).create().show();
     }
 }

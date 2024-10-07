@@ -1,6 +1,5 @@
 package com.example.getaways.UI;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -24,7 +23,6 @@ import com.example.getaways.R;
 import com.example.getaways.UI.adapters.ExcursionAdapter;
 import com.example.getaways.database.Repository;
 import com.example.getaways.entities.Excursion;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,26 +98,6 @@ public class VacationShare extends BaseActivity {
         setStatusBarColorBasedOnTheme();
     }
 
-    private String constructEmailText(String userMessage, List<String> excursionTitles) {
-        String vacationTitle = getIntent().getStringExtra("VACATION_TITLE");
-        String hotelName = getIntent().getStringExtra("HOTEL_NAME");
-        String startDate = getIntent().getStringExtra("VACATION_START_DATE");
-        String endDate = getIntent().getStringExtra("VACATION_END_DATE");
-
-        String vacationFormatted = "Vacation title: " + vacationTitle + "\n";
-        String hotelFormatted = "Hotel name: " + hotelName + "\n";
-        String datesFormatted = "Start date: " + startDate + "\nEnd date: " + endDate + "\n\n";
-
-        // Format the list of excursions
-        StringBuilder excursionsFormatted = new StringBuilder();
-        excursionsFormatted.append("Excursions:\n");
-        for (String excursionTitle : excursionTitles) {
-            excursionsFormatted.append("- ").append(excursionTitle).append("\n");
-        }
-
-        return vacationFormatted + hotelFormatted + datesFormatted + excursionsFormatted + "\n" + userMessage;
-    }
-
     // ***EVALUATION, TASK B3-f:  Include sharing features so the user can share all the vacation details via a sharing feature (either e-mail, clipboard or SMS) that automatically populates with the vacation details.
     // Method to handle share button click, creates implicit email intent with pre-populated information from current activity
     private void handleShareEmailButtonClick() {
@@ -171,16 +149,23 @@ public class VacationShare extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void showLogoutDialog() {
-        new AlertDialog.Builder(this).setTitle("Log out").setMessage("Are you sure you want to log out?").setPositiveButton("Yes", (dialog, which) -> {
-            // Log out the user and navigate to the login screen
-            FirebaseAuth.getInstance().signOut();
-            Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();  // End the current activity
-        }).setNegativeButton("No", (dialog, which) -> {
-            // Dismiss the dialog if the user clicks "No"
-            dialog.dismiss();
-        }).create().show();
+    private String constructEmailText(String userMessage, List<String> excursionTitles) {
+        String vacationTitle = getIntent().getStringExtra("VACATION_TITLE");
+        String hotelName = getIntent().getStringExtra("HOTEL_NAME");
+        String startDate = getIntent().getStringExtra("VACATION_START_DATE");
+        String endDate = getIntent().getStringExtra("VACATION_END_DATE");
+
+        String vacationFormatted = "Vacation title: " + vacationTitle + "\n";
+        String hotelFormatted = "Hotel name: " + hotelName + "\n";
+        String datesFormatted = "Start date: " + startDate + "\nEnd date: " + endDate + "\n\n";
+
+        // Format the list of excursions
+        StringBuilder excursionsFormatted = new StringBuilder();
+        excursionsFormatted.append("Excursions:\n");
+        for (String excursionTitle : excursionTitles) {
+            excursionsFormatted.append("- ").append(excursionTitle).append("\n");
+        }
+
+        return vacationFormatted + hotelFormatted + datesFormatted + excursionsFormatted + "\n" + userMessage;
     }
 }

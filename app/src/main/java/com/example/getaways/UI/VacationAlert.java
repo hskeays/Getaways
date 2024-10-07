@@ -2,7 +2,6 @@ package com.example.getaways.UI;
 
 import android.Manifest;
 import android.app.AlarmManager;
-import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -34,7 +33,6 @@ import com.example.getaways.R;
 import com.example.getaways.UI.adapters.ExcursionAdapter;
 import com.example.getaways.UI.receivers.NotificationReceiver;
 import com.example.getaways.database.Repository;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -143,19 +141,6 @@ public class VacationAlert extends BaseActivity {
             startActivity(new Intent(this, VacationDetails.class));
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void showLogoutDialog() {
-        new AlertDialog.Builder(this).setTitle("Log out").setMessage("Are you sure you want to log out?").setPositiveButton("Yes", (dialog, which) -> {
-            // Log out the user and navigate to the login screen
-            FirebaseAuth.getInstance().signOut();
-            Toast.makeText(this, "Logged out successfully.", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();  // End the current activity
-        }).setNegativeButton("No", (dialog, which) -> {
-            // Dismiss the dialog if the user clicks "No"
-            dialog.dismiss();
-        }).create().show();
     }
 
     @Override

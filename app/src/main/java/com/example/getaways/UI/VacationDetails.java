@@ -28,7 +28,6 @@ import com.example.getaways.database.Repository;
 import com.example.getaways.entities.Excursion;
 import com.example.getaways.entities.Vacation;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Calendar;
 import java.util.Collections;
@@ -172,31 +171,6 @@ public class VacationDetails extends BaseActivity {
             startActivity(new Intent(this, VacationDetails.class));
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void showDatePickerDialog(Button button) {
-        final Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        new DatePickerDialog(this, (view, selectedYear, selectedMonth, selectedDay) -> {
-            String selectedDate = (selectedMonth + 1) + "/" + selectedDay + "/" + selectedYear;
-            button.setText(selectedDate);
-        }, year, month, day).show();
-    }
-
-    private void showLogoutDialog() {
-        new android.app.AlertDialog.Builder(this).setTitle("Log out").setMessage("Are you sure you want to log out?").setPositiveButton("Yes", (dialog, which) -> {
-            // Log out the user and navigate to the login screen
-            FirebaseAuth.getInstance().signOut();
-            Toast.makeText(this, "Logged out successfully.", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();  // End the current activity
-        }).setNegativeButton("No", (dialog, which) -> {
-            // Dismiss the dialog if the user clicks "No"
-            dialog.dismiss();
-        }).create().show();
     }
 
     // ***EVALUATION, TASK B3-a:  Display a detailed view of the vacation, including all vacation details. This view can also be used to add and update the vacation information.
@@ -381,5 +355,17 @@ public class VacationDetails extends BaseActivity {
             excursionAdapter.setExcursions(excursions);
             swipeRefreshLayout.setRefreshing(false);
         });
+    }
+
+    private void showDatePickerDialog(Button button) {
+        final Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        new DatePickerDialog(this, (view, selectedYear, selectedMonth, selectedDay) -> {
+            String selectedDate = (selectedMonth + 1) + "/" + selectedDay + "/" + selectedYear;
+            button.setText(selectedDate);
+        }, year, month, day).show();
     }
 }

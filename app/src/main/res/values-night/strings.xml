@@ -1,33 +1,46 @@
 <resources>
-    <!-- App Title -->
+
+    <!-- App Name -->
     <string name="app_name">Getaways</string>
     <string name="welcome_to_getaways">Welcome to Getaways</string>
 
     <!-- Navigation -->
     <string name="Home">Home</string>
     <string name="Back">Back</string>
-    <string name="add_floating_icon">Add floating icon</string>
+    <string name="menu_icon">Menu Icon</string>
 
-    <!-- Actions -->
+    <!-- Common Actions -->
     <string name="enter">Enter</string>
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="share">Share</string>
+    <string name="edit">Edit</string>
     <string name="set_alert">Set Alert</string>
+    <string name="search">Search</string>
 
-    <!-- Vacation Details -->
+    <!-- Authentication -->
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="logout">Logout</string>
+
+    <!-- Vacation Management -->
     <string name="vacation_list">Vacation List</string>
     <string name="vacation_details">Vacation Details</string>
+    <string name="add_new_vacation">Add New Vacation</string>
+    <string name="my_vacations">My Vacations</string>
     <string name="title">Title:</string>
     <string name="hotel">Hotel:</string>
     <string name="start_date">Start date:</string>
     <string name="end_date">End date:</string>
     <string name="pick_a_date">Pick a date</string>
-    <string name="enter_hotel_name">Enter hotel name</string>
     <string name="enter_vacation_title">Enter vacation title</string>
+    <string name="enter_hotel_name">Enter hotel name</string>
     <string name="enter_a_new_vacation">Enter a new vacation</string>
+    <string name="vacations">Vacations</string>
 
-    <!-- Excursion Details -->
+    <!-- Excursion Management -->
     <string name="excursion_title">Excursion Title</string>
     <string name="enter_excursion_title">Enter excursion title</string>
     <string name="date">Date:</string>
@@ -36,15 +49,21 @@
     <string name="no_excursion_name">No excursion name</string>
     <string name="no_current_excursions">No current excursions</string>
     <string name="excursions">Excursions:</string>
+    <string name="add_excursion">Add Excursion</string>
 
-    <!-- Messages -->
+    <!-- Alerts and Messages -->
     <string name="alert">Alert</string>
     <string name="enter_your_message_below">Enter your message below:</string>
     <string name="type_your_message_here">Type your message here</string>
 
-    <!-- Placeholders -->
-    <string name="placeholder">PLACEHOLDER</string>
+    <!-- Icons and Descriptions -->
+    <string name="add_floating_icon">Add floating icon</string>
     <string name="content_description_airplane_icon">airplane icon</string>
-    <string name="vacations">Vacations</string>
-    <string name="search">Search</string>
+    <string name="edit_icon">Edit icon</string>
+    <string name="alert_icon">Alert icon</string>
+    <string name="add_vacation">Add Vacation</string>
+
+    <!-- Miscellaneous -->
+    <string name="placeholder">PLACEHOLDER</string>
+
 </resources>

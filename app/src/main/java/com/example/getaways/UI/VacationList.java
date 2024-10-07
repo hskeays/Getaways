@@ -1,12 +1,10 @@
 package com.example.getaways.UI;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.widget.SearchView;
@@ -23,7 +21,6 @@ import com.example.getaways.R;
 import com.example.getaways.UI.adapters.VacationAdapter;
 import com.example.getaways.database.Repository;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class VacationList extends BaseActivity {
     Repository repository;
@@ -133,19 +130,6 @@ public class VacationList extends BaseActivity {
             startActivity(new Intent(this, VacationDetails.class));
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void showLogoutDialog() {
-        new AlertDialog.Builder(this).setTitle("Log out").setMessage("Are you sure you want to log out?").setPositiveButton("Yes", (dialog, which) -> {
-            // Log out the user and navigate to the login screen
-            FirebaseAuth.getInstance().signOut();
-            Toast.makeText(this, "Logged out successfully.", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();  // End the current activity
-        }).setNegativeButton("No", (dialog, which) -> {
-            // Dismiss the dialog if the user clicks "No"
-            dialog.dismiss();
-        }).create().show();
     }
 
     private void refreshVacationList() {

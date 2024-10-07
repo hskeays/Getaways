@@ -21,7 +21,6 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.getaways.R;
 import com.example.getaways.database.Repository;
 import com.example.getaways.entities.Excursion;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Calendar;
 
@@ -124,33 +123,6 @@ public class ExcursionDetails extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void showDatePickerDialog(Button button) {
-        final Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, selectedYear, selectedMonth, selectedDay) -> {
-            String selectedDate = (selectedMonth + 1) + "/" + selectedDay + "/" + selectedYear;
-            button.setText(selectedDate);
-        }, year, month, day);
-
-        datePickerDialog.show();
-    }
-
-    private void showLogoutDialog() {
-        new android.app.AlertDialog.Builder(this).setTitle("Log out").setMessage("Are you sure you want to log out?").setPositiveButton("Yes", (dialog, which) -> {
-            // Log out the user and navigate to the login screen
-            FirebaseAuth.getInstance().signOut();
-            Toast.makeText(this, "Logged out successfully.", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();  // End the current activity
-        }).setNegativeButton("No", (dialog, which) -> {
-            // Dismiss the dialog if the user clicks "No"
-            dialog.dismiss();
-        }).create().show();
-    }
-
     // ***EVALUATION, TASK B5-b:  Enter, edit, and delete excursion information.
     private void handleSaveButtonClick(int excursionID, int vacationID) {
         String excursionTitle = etvExcursionTitle.getText().toString();
@@ -227,5 +199,19 @@ public class ExcursionDetails extends BaseActivity {
 
     private boolean isValidExcursion(String excursionTitle, String excursionDate, String vacationStartDate, String vacationEndDate) {
         return !excursionTitle.isEmpty() && !excursionDate.equals("Pick a date") && isDateBetween(excursionDate, vacationStartDate, vacationEndDate);
+    }
+
+    private void showDatePickerDialog(Button button) {
+        final Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, selectedYear, selectedMonth, selectedDay) -> {
+            String selectedDate = (selectedMonth + 1) + "/" + selectedDay + "/" + selectedYear;
+            button.setText(selectedDate);
+        }, year, month, day);
+
+        datePickerDialog.show();
     }
 }
