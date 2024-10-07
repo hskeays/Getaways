@@ -19,6 +19,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.getaways.R;
+import com.example.getaways.UI.Validators.DateValidator;
 import com.example.getaways.database.Repository;
 import com.example.getaways.entities.Excursion;
 
@@ -27,6 +28,7 @@ import java.util.Calendar;
 // ***EVALUATION, TASK B3-h:  Add, update, and delete as many excursions as needed.
 // Class that handles adding, updating, deleting excursions
 public class ExcursionDetails extends BaseActivity {
+    private final DateValidator dateValidator = new DateValidator();
     private Repository repository;
     private EditText etvExcursionTitle;
     private Button btnPickExcursionDate;
@@ -198,7 +200,7 @@ public class ExcursionDetails extends BaseActivity {
     }
 
     private boolean isValidExcursion(String excursionTitle, String excursionDate, String vacationStartDate, String vacationEndDate) {
-        return !excursionTitle.isEmpty() && !excursionDate.equals("Pick a date") && isDateBetween(excursionDate, vacationStartDate, vacationEndDate);
+        return !excursionTitle.isEmpty() && !excursionDate.equals("Pick a date") && dateValidator.isDateBetween(excursionDate, vacationStartDate, vacationEndDate);
     }
 
     private void showDatePickerDialog(Button button) {

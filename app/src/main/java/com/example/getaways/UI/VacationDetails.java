@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.getaways.R;
+import com.example.getaways.UI.Validators.DateValidator;
 import com.example.getaways.UI.adapters.ExcursionAdapter;
 import com.example.getaways.database.Repository;
 import com.example.getaways.entities.Excursion;
@@ -45,6 +46,7 @@ public class VacationDetails extends BaseActivity {
     private Button btnPickStartDate;
     private Button btnPickEndDate;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private final DateValidator dateValidator = new DateValidator();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,9 +207,9 @@ public class VacationDetails extends BaseActivity {
             }
         } else if (vacationTitle.isEmpty() || hotelName.isEmpty()) {
             Toast.makeText(this, "Vacation title and hotel name fields cannot be empty.", Toast.LENGTH_SHORT).show();
-        } else if (!isDateOnOrAfterCurrentDate(startDate)) {
+        } else if (!dateValidator.isDateOnOrAfterCurrentDate(startDate)) {
             Toast.makeText(this, "Start date must be today, or in the future.", Toast.LENGTH_SHORT).show();
-        } else if (!isDateBefore(startDate, endDate)) {
+        } else if (!dateValidator.isDateBefore(startDate, endDate)) {
             Toast.makeText(this, "Start date must be before end date.", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Invalid input, please try again.", Toast.LENGTH_SHORT).show();
@@ -344,10 +346,10 @@ public class VacationDetails extends BaseActivity {
     // ***EVALUATION, TASK B3-c:  Include validation that the input dates are formatted correctly.
     // Create method to validate all vacation input is valid
     private boolean isValidVacation(int vacationID, String vacationTitle, String hotelName, String startDate, String endDate) {
-        if (vacationID != 0 && !startDate.equals("Pick a date") && !endDate.equals("Pick a date") && !vacationTitle.isEmpty() && !hotelName.isEmpty() && isDateBefore(startDate, endDate)) {
+        if (vacationID != 0 && !startDate.equals("Pick a date") && !endDate.equals("Pick a date") && !vacationTitle.isEmpty() && !hotelName.isEmpty() && dateValidator.isDateBefore(startDate, endDate)) {
             return true;
         }
-        return !startDate.equals("Pick a date") && !endDate.equals("Pick a date") && !vacationTitle.isEmpty() && !hotelName.isEmpty() && isDateOnOrAfterCurrentDate(startDate) && isDateBefore(startDate, endDate);
+        return !startDate.equals("Pick a date") && !endDate.equals("Pick a date") && !vacationTitle.isEmpty() && !hotelName.isEmpty() && dateValidator.isDateOnOrAfterCurrentDate(startDate) && dateValidator.isDateBefore(startDate, endDate);
     }
 
     private void refreshVacationList(int vacationID) {
