@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.getaways'
+    namespace 'com.howardkeays.getaways'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.example.getaways"
+        applicationId "com.howardkeays.getaways"
         minSdk 26
         targetSdk 35
         versionCode 1
